@@ -3,7 +3,8 @@ var gutil = require('gulp-util');
 var connect = require('gulp-connect');
 var del = require('del');
 var react = require('gulp-react');
-var handleErrors = require('../util/handleErrors');
+var handleErrors = require('gulp-plumber');
+var errorHandler = require('../util/handleErrors');
 
 var paths = {
   html: ['src/html/**/*.html'],
@@ -23,17 +24,15 @@ gulp.task('connect', function () {
 });
 
 gulp.task('html', function () {
-  del(['build/**/*.html']);
   gulp.src(paths.html)
-      .on('error', handleErrors)
+      .pipe(handleErrors(errorHandler))
       .pipe(gulp.dest('build'))
       .pipe(connect.reload());
 });
 
 gulp.task('scripts', function () {
-  del(['build/**/*.js']);
   gulp.src(paths.scripts)
-      .on('error', handleErrors)
+      .pipe(handleErrors(errorHandler))
       .pipe(react())
       .pipe(gulp.dest('build/js'))
       .pipe(connect.reload());
@@ -41,7 +40,7 @@ gulp.task('scripts', function () {
 
 gulp.task('build', ['clean', 'html', 'scripts'], function () {
   gulp.src(paths.libraries)
-      .on('error', handleErrors)
+      .pipe(handleErrors(errorHandler))
       .pipe(gulp.dest('build/js'));
 });
 
