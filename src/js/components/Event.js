@@ -1,9 +1,10 @@
 var Event = React.createClass({
   render: function() {
     return (
-      <li className="event item">
-        {this.props.data.name}
-      </li>
+      <div className="event item">
+        <a className="header">{this.props.data.name}</a>
+        <span className="subtitle">{this.props.data.date}</span>
+      </div>
     );
   }
 });

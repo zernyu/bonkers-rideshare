@@ -1,16 +1,16 @@
 var EventList = React.createClass({
   render: function() {
     return (
-      <ul className="event list">
-        {[{id: 'asdflkajsdf', name: 'wut'}].map(function (event) {
+      <div className="ui large event link list">
+        {[{id: 'asdflkajsdf', name: 'Hillsboro Roubaix', date: 'Wed Apr 8'}].map(function (event) {
           return <Event key={event.id} data={event} />;
         })}
-      </ul>
+      </div>
     );
   }
 });
 
 React.render(
     <EventList />,
-    document.getElementById('root')
+    document.getElementById('eventsRoot')
 );

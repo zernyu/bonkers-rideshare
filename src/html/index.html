@@ -1,14 +1,35 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Bonkers Ride Share</title>
-    <link rel="stylesheet" href="libs/semantic.css" />
-  </head>
-  <body>
-    <div id="root"></div>
+<head>
+  <title>Bonkers Ride Share</title>
+  <link rel="stylesheet" href="libs/semantic-ui/dist/semantic.css"/>
+</head>
+<body>
+<div class="ui page grid">
+  <div class="row">
+    <div class="center aligned column">
+      <h1 class="ui basic segment centered header">
+        Catch a ride!
+        <div class="sub header">with some pretty sweet people</div>
+      </h1>
+    </div>
+  </div>
 
-    <script src="libs/react.js"></script>
-    <script src="js/components/Event.js"></script>
-    <script src="js/components/EventList.js"></script>
-  </body>
+  <div class="row">
+    <div class="column">
+      <h2 class="ui header">
+        <i class="checkered flag icon"></i>
+
+        <div class="content">Events</div>
+      </h2>
+
+      <div id="eventsRoot" class="ui basic segment"></div>
+    </div>
+  </div>
+</div>
+
+<script src="libs/react/react.js"></script>
+<script src="js/components/Event.js"></script>
+<script src="js/components/EventList.js"></script>
+</body>
 </html>

@@ -12,7 +12,8 @@ var paths = {
   scripts: ['src/js/**/*.js'],
   libraries: [
     'bower_components/react/*.js',
-    'bower_components/semantic-ui/dist/semantic.css'
+    'bower_components/semantic-ui/dist/semantic.css',
+    'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
   ]
 };
 
@@ -43,9 +44,9 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('libraries', function () {
-  return gulp.src(paths.libraries)
+  return gulp.src(paths.libraries, {base: './bower_components'})
       .pipe(handleErrors(errorHandler))
-      .pipe(gulp.dest('build/libs'));
+      .pipe(gulp.dest('build/libs/'));
 });
 
 gulp.task('build', function (cb) {
