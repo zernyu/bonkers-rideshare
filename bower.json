@@ -1,0 +1,19 @@
+{
+  "name": "rideshare",
+  "version": "0.0.0",
+  "authors": [
+    "Zernyu Chou <zernyu@gmail.com>"
+  ],
+  "description": "Sharing rides n stuff!",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.1"
+  }
+}
