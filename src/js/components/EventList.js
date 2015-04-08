@@ -1,13 +1,16 @@
 var EventList = React.createClass({
   render: function() {
     return (
-      <div className="event list">
-        Hello, world! I am an EventList!
-      </div>
+      <ul className="event list">
+        {[{id: 'asdflkajsdf', name: 'wut'}].map(function (event) {
+          return <Event key={event.id} data={event} />;
+        })}
+      </ul>
     );
   }
 });
+
 React.render(
-  <EventList />,
-  document.getElementById('content')
+    <EventList />,
+    document.getElementById('root')
 );
