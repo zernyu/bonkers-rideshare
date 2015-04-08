@@ -10,6 +10,7 @@ var errorHandler = require('../util/handleErrors');
 var paths = {
   html: ['src/html/**/*.html'],
   scripts: ['src/js/**/*.js'],
+  style: ['src/style/**/*.css'],
   libraries: [
     'bower_components/react/*.js',
     'bower_components/semantic-ui/dist/semantic.css',
@@ -43,6 +44,13 @@ gulp.task('scripts', function () {
       .pipe(connect.reload());
 });
 
+gulp.task('style', function () {
+  return gulp.src(paths.style)
+      .pipe(handleErrors(errorHandler))
+      .pipe(gulp.dest('build/css'))
+      .pipe(connect.reload());
+});
+
 gulp.task('libraries', function () {
   return gulp.src(paths.libraries, {base: './bower_components'})
       .pipe(handleErrors(errorHandler))
@@ -52,7 +60,7 @@ gulp.task('libraries', function () {
 gulp.task('build', function (cb) {
   runSequence(
       'clean',
-      ['html', 'scripts', 'libraries'],
+      ['html', 'scripts', 'style', 'libraries'],
       cb
   );
 });
@@ -60,6 +68,7 @@ gulp.task('build', function (cb) {
 gulp.task('watch', function () {
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.scripts, ['scripts']);
+  gulp.watch(paths.scripts, ['style']);
 });
 
 gulp.task('default', ['build', 'connect', 'watch']);
