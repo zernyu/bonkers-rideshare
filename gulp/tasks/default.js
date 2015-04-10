@@ -6,13 +6,17 @@ var del = require('del');
 var react = require('gulp-react');
 var handleErrors = require('gulp-plumber');
 var errorHandler = require('../util/handleErrors');
+var substituter = require('gulp-substituter');
+var config = require('../config');
 
 var paths = {
   html: ['src/html/**/*.html'],
   scripts: ['src/js/**/*.js'],
   style: ['src/style/**/*.css'],
   libraries: [
-    'bower_components/react/*.js',
+    'bower_components/react/react.js',
+    'bower_components/parse/parse.js',
+    'bower_components/ParseReact/dist/parse-react.js',
     'bower_components/semantic-ui/dist/semantic.css',
     'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
   ]
@@ -40,6 +44,7 @@ gulp.task('scripts', function () {
   return gulp.src(paths.scripts)
       .pipe(handleErrors(errorHandler))
       .pipe(react())
+      .pipe(substituter(config.parse))
       .pipe(gulp.dest('build/js'))
       .pipe(connect.reload());
 });
