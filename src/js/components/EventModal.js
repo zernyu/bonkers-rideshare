@@ -1,4 +1,12 @@
 var EventModal = React.createClass({
+  mixins: [ParseReact.Mixin],
+
+  observe: function () {
+    return {
+      attendees: (new Parse.Query('Attendee')).equalTo('eventId', this.props.event.objectId).descending('createdAt')
+    };
+  },
+
   closeModal: function () {
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
@@ -9,8 +17,8 @@ var EventModal = React.createClass({
           <div className="event content">
             <div className="center">
               <div className="ui attached segment">
-                <h2 className="ui header">{this.props.data.name}
-                  <div className="sub header">{this.props.data.date.toDateString()}</div>
+                <h2 className="ui header">{this.props.event.name}
+                  <div className="sub header">{this.props.event.date.toDateString()}</div>
                 </h2>
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
@@ -24,6 +32,15 @@ var EventModal = React.createClass({
                 </tr>
                 </thead>
                 <tbody>
+                {this.data.attendees.map(function (attendee) {
+                  return (
+                    <tr key={attendee.objectId}>
+                      <td>{attendee.name}</td>
+                      <td>Approved</td>
+                      <td>None</td>
+                    </tr>
+                  );
+                })}
                 <tr>
                   <td>John</td>
                   <td>Approved</td>
