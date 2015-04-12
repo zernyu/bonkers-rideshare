@@ -1,4 +1,8 @@
 var EventModal = React.createClass({
+  closeModal: function () {
+    React.unmountComponentAtNode(this.getDOMNode().parentNode);
+  },
+
   render: function () {
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
@@ -8,7 +12,7 @@ var EventModal = React.createClass({
                 <h2 className="ui header">{this.props.data.name}
                   <div className="sub header">{this.props.data.date.toDateString()}</div>
                 </h2>
-                <i className="remove circle icon"></i>
+                <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
               <div className="ui fluid attached blue button">Join this event</div>
               <table className="ui attached table">
