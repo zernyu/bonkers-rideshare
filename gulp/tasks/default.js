@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var series = require('stream-series');
+var inject = require('gulp-inject');
 var runSequence = require('run-sequence');
 var connect = require('gulp-connect');
 var del = require('del');
@@ -33,9 +35,13 @@ gulp.task('connect', function () {
   });
 });
 
-gulp.task('html', function () {
+gulp.task('html', ['scripts', 'style', 'libraries'], function () {
+  var libSources = gulp.src(['build/libs/**/*.js', 'build/libs/**/*.css'], {read: false});
+  var appSources = gulp.src(['build/**/*.js', 'build/**/*.css', '!build/libs/**/*.js', '!build/libs/**/*.css'], {read: false});
+
   return gulp.src(paths.html)
       .pipe(handleErrors(errorHandler))
+      .pipe(inject(series(libSources, appSources), {ignorePath: 'build/'}))
       .pipe(gulp.dest('build'))
       .pipe(connect.reload());
 });
@@ -65,7 +71,7 @@ gulp.task('libraries', function () {
 gulp.task('build', function (cb) {
   runSequence(
       'clean',
-      ['html', 'scripts', 'style', 'libraries'],
+      'html',
       cb
   );
 });
@@ -74,6 +80,7 @@ gulp.task('watch', function () {
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.scripts, ['scripts']);
   gulp.watch(paths.style, ['style']);
+  gulp.watch(paths.libraries, ['libraries']);
 });
 
 gulp.task('default', ['build', 'connect', 'watch']);
