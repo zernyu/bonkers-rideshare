@@ -1,10 +1,10 @@
 var Event = React.createClass({
   render: function() {
     return (
-      <div className="event item">
-        <a className="header">{this.props.data.name}</a>
-        <span className="subtitle">{this.props.data.date}</span>
-      </div>
+      <a className="event item">
+        <div className="header">{this.props.data.name}</div>
+        <span className="subtitle">{this.props.data.date.toDateString()}</span>
+      </a>
     );
   }
 });

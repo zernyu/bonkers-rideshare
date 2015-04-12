@@ -1,11 +1,19 @@
 var EventList = React.createClass({
-  render: function() {
+  mixins: [ParseReact.Mixin],
+
+  observe: function () {
+    return {
+      events: (new Parse.Query('Event')).descending('createdAt')
+    };
+  },
+
+  render: function () {
     return (
-      <div className="ui large event link list">
-        {[{id: 'asdflkajsdf', name: 'Hillsboro Roubaix', date: 'Wed Apr 8'}].map(function (event) {
-          return <Event key={event.id} data={event} />;
-        })}
-      </div>
+        <div className="ui large event selection list">
+          {this.data.events.map(function (event) {
+            return <Event key={event.objectId} data={event}/>;
+          })}
+        </div>
     );
   }
 });
