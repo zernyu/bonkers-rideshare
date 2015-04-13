@@ -1,7 +1,7 @@
 var Event = React.createClass({
   openEvent: function () {
     var eventModal = React.createElement(EventModal, {event: this.props.data});
-    React.render(eventModal, document.getElementById('modal'));
+    React.render(eventModal, document.getElementById('eventModal'));
   },
 
   render: function () {

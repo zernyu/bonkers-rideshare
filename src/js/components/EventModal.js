@@ -7,6 +7,11 @@ var EventModal = React.createClass({
     };
   },
 
+  addAttendee: function () {
+    var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: {}});
+    React.render(attendeeModal, document.getElementById('attendeeModal'));
+  },
+
   closeModal: function () {
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
@@ -15,20 +20,21 @@ var EventModal = React.createClass({
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="event content">
-            <div className="center">
-              <div className="ui attached segment">
+            <div className="ui basic segment">
+              <div className="ui top attached segment">
                 <h2 className="ui header">{this.props.event.name}
                   <div className="sub header">{this.props.event.date.toDateString()}</div>
                 </h2>
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
-              <div className="ui fluid attached blue button">Join this event</div>
+              <div className="ui fluid attached green join button" onClick={this.addAttendee}>Join this event</div>
               <table className="ui attached table">
                 <thead>
                 <tr>
                   <th>Name</th>
                   <th>Driving</th>
                   <th>Riding with</th>
+                  <th>Notes</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,38 +42,27 @@ var EventModal = React.createClass({
                   return (
                     <tr key={attendee.objectId}>
                       <td>{attendee.name}</td>
-                      <td>Approved</td>
-                      <td>None</td>
+                      <td>{attendee.carCapacity}</td>
+                      <td>{attendee.ridingWith}</td>
+                      <td>{attendee.notes}</td>
                     </tr>
                   );
                 })}
-                <tr>
-                  <td>John</td>
-                  <td>Approved</td>
-                  <td>None</td>
-                </tr>
-                <tr>
-                  <td>Jamie</td>
-                  <td>Approved</td>
-                  <td>Requires call</td>
-                </tr>
-                <tr>
-                  <td>Jill</td>
-                  <td>Denied</td>
-                  <td>None</td>
-                </tr>
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>3 People</th>
-                  <th>2 Drivers</th>
-                  <th>6 Need a ride</th>
+                  <th>{this.data.attendees.length} attendees</th>
+                  <th>2 drivers</th>
+                  <th>6 need a ride</th>
+                  <th></th>
                 </tr>
                 </tfoot>
               </table>
-              <div className="ui fluid attached blue button">Join this event</div>
+              <div className="ui fluid attached green join button" onClick={this.addAttendee}>Join this event</div>
+              <div className="ui bottom attached segment"></div>
             </div>
           </div>
+          <div id="attendeeModal"></div>
         </div>
     );
   }
