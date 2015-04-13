@@ -48,7 +48,7 @@ var EventModal = React.createClass({
                 <div className={transportationToggle} onClick={this.toggleView.bind(this, 'transportation')}>Transportation</div>
                 <div className={housingToggle} onClick={this.toggleView.bind(this, 'housing')}>Housing</div>
               </div>
-              <table className="ui attached table">
+              <table className="ui attached unstackable table">
                 <thead>
                 <tr>
                   <th>Name</th>
@@ -72,7 +72,7 @@ var EventModal = React.createClass({
                 <tfoot>
                 <tr>
                   <th>{this.data.attendees.length} attendees</th>
-                  <th>2 {transportationView ? 'drivers' : 'hosts'}</th>
+                  <th>2 are {transportationView ? 'driving' : 'hosting'}</th>
                   <th>6 need a {transportationView ? 'ride' : 'roof'}</th>
                   <th></th>
                 </tr>

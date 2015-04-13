@@ -10,8 +10,12 @@
   top: auto !important;
 }
 
-.attendee textarea {
-  resize: none !important;
+.attendee .ui.form textarea {
+  resize: none;
+}
+
+.attendee .ui.form select {
+  height: 2.72em;
 }
 
 .event.content h2 {

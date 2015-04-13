@@ -9,6 +9,10 @@ var AttendeeModal = React.createClass({
     this.setState({ driving: driving });
   },
 
+  hosting: function (hosting) {
+    this.setState({ hosting: hosting });
+  },
+
   componentWillMount: function () {
     var defaultState = this.props.attendee;
     this.setState(defaultState);
@@ -19,6 +23,11 @@ var AttendeeModal = React.createClass({
     var ridingToggle = classNames('ui button', { 'positive active': !this.state.driving });
     var drivingForm = classNames('field group', { 'hidden': !this.state.driving });
     var ridingForm = classNames('field group', { 'hidden': this.state.driving });
+
+    var hostingToggle = classNames('ui button', { 'positive active': this.state.hosting });
+    var roomingToggle = classNames('ui button', { 'positive active': !this.state.hosting });
+    var hostingForm = classNames('field group', { 'hidden': !this.state.hosting });
+    var roomingForm = classNames('field group', { 'hidden': this.state.hosting });
 
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
@@ -45,15 +54,9 @@ var AttendeeModal = React.createClass({
                 <div className={drivingForm}>
                   <div className="field">
                     <label>Car capacity</label>
-                    <select value={this.state.carCapacity}>
-                      <option value="">Number of people including yourself</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                    </select>
+                    <input type="text"
+                           placeholder="Number of riders (including yourself)"
+                           value={this.state.carCapacity} />
                   </div>
                 </div>
                 <div className={ridingForm}>
@@ -61,6 +64,30 @@ var AttendeeModal = React.createClass({
                     <label>Riding with</label>
                     <select value={this.state.ridingWith}>
                       <option value="">Need a ride!</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="field">
+                  <div className="ui two fluid buttons">
+                    <div className={hostingToggle} onClick={this.hosting.bind(this, true)}>
+                      <i className="car icon"></i> Hosting</div>
+                    <div className={roomingToggle} onClick={this.hosting.bind(this, false)}>
+                      <i className="handicap icon"></i> Bumming</div>
+                  </div>
+                </div>
+                <div className={hostingForm}>
+                  <div className="field">
+                    <label>Housing capacity</label>
+                    <input type="text"
+                           placeholder="Number of people (including yourself) who can stay with you"
+                           value={this.state.hostingCapacity} />
+                  </div>
+                </div>
+                <div className={roomingForm}>
+                  <div className="field">
+                    <label>Rooming with</label>
+                    <select value={this.state.roomingWith}>
+                      <option value="">Need a floor to sleep on!</option>
                     </select>
                   </div>
                 </div>
