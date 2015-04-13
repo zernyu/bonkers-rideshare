@@ -27,7 +27,7 @@ var EventModal = React.createClass({
                 </h2>
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
-              <div className="ui fluid attached green join button" onClick={this.addAttendee}>Join this event</div>
+              <div className="ui fluid attached positive join button" onClick={this.addAttendee}>Join this event</div>
               <table className="ui attached table">
                 <thead>
                 <tr>
@@ -58,7 +58,7 @@ var EventModal = React.createClass({
                 </tr>
                 </tfoot>
               </table>
-              <div className="ui fluid attached green join button" onClick={this.addAttendee}>Join this event</div>
+              <div className="ui fluid attached positive join button" onClick={this.addAttendee}>Join this event</div>
               <div className="ui bottom attached segment"></div>
             </div>
           </div>
