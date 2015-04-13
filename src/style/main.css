@@ -2,6 +2,18 @@
   overflow-y: auto;
 }
 
+.form .hidden.field.group {
+  display: none;
+}
+
+.attendee.content {
+  top: auto !important;
+}
+
+.attendee textarea {
+  resize: none !important;
+}
+
 .event.content h2 {
   margin: 0;
 }
@@ -33,8 +45,4 @@
 
 .event.content .remove:hover {
   opacity: 1;
-}
-
-.attendee.content {
-  top: auto !important;
 }

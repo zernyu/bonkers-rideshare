@@ -10,12 +10,15 @@ var AttendeeModal = React.createClass({
   },
 
   componentWillMount: function () {
-    this.setState(this.props.attendee);
+    var defaultState = this.props.attendee;
+    this.setState(defaultState);
   },
 
   render: function () {
-    var drivingClasses = classNames('ui button', { active: this.state.driving });
-    var ridingClasses = classNames('ui button', { active: !this.state.driving });
+    var drivingToggle = classNames('ui button', { 'positive active': this.state.driving });
+    var ridingToggle = classNames('ui button', { 'positive active': !this.state.driving });
+    var drivingForm = classNames('field group', { 'hidden': !this.state.driving });
+    var ridingForm = classNames('field group', { 'hidden': this.state.driving });
 
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
@@ -31,9 +34,39 @@ var AttendeeModal = React.createClass({
                   <label>Name</label>
                   <input type="text" valueLink={this.linkState('name')} />
                 </div>
-                <div className="ui two fluid buttons">
-                  <div className={drivingClasses} onClick={this.driving.bind(this, true)}>Driving</div>
-                  <div className={ridingClasses} onClick={this.driving.bind(this, false)}>Bumming</div>
+                <div className="field">
+                  <div className="ui two fluid buttons">
+                    <div className={drivingToggle} onClick={this.driving.bind(this, true)}>
+                      <i className="car icon"></i> Driving</div>
+                    <div className={ridingToggle} onClick={this.driving.bind(this, false)}>
+                      <i className="handicap icon"></i> Bumming</div>
+                  </div>
+                </div>
+                <div className={drivingForm}>
+                  <div className="field">
+                    <label>Car capacity</label>
+                    <select value={this.state.capacity}>
+                      <option value="">Number of people including yourself</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={ridingForm}>
+                  <div className="field">
+                    <label>Riding with</label>
+                    <select value={this.state.ridingWith}>
+                      <option value="">Need a ride!</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="field">
+                  <label>Notes</label>
+                  <textarea placeholder="Leaving from Star Lounge at 8am, bringing a teddy bear" value={this.state.notes}></textarea>
                 </div>
               </div>
               <div className="ui bottom attached segment">
