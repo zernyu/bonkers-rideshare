@@ -16,9 +16,10 @@ var paths = {
   scripts: ['src/js/**/*.js'],
   style: ['src/style/**/*.css'],
   libraries: [
-    'bower_components/react/react.js',
+    'bower_components/react/react-with-addons.js',
     'bower_components/parse/parse.js',
     'bower_components/ParseReact/dist/parse-react.js',
+    'bower_components/classnames/index.js',
     'bower_components/semantic-ui/dist/semantic.css',
     'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
   ]
