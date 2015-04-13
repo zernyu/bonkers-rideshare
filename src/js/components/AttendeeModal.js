@@ -45,7 +45,7 @@ var AttendeeModal = React.createClass({
                 <div className={drivingForm}>
                   <div className="field">
                     <label>Car capacity</label>
-                    <select value={this.state.capacity}>
+                    <select value={this.state.carCapacity}>
                       <option value="">Number of people including yourself</option>
                       <option value="1">1</option>
                       <option value="2">2</option>

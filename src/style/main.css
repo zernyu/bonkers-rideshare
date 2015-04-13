@@ -22,7 +22,7 @@
   font-style: italic;
 }
 
-.event.content .join.button {
+.event.content .full.width {
   margin: 0em -1px;
   width: -webkit-calc(100% + 2px);
   width: calc(100% + 2px);

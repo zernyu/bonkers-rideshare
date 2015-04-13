@@ -16,7 +16,24 @@ var EventModal = React.createClass({
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
+  toggleView: function (switchTo) {
+    this.setState({
+      transportationView: switchTo === 'transportation'
+    });
+  },
+
+  getInitialState: function () {
+    return {
+      transportationView: true
+    };
+  },
+
   render: function () {
+    var transportationView = this.state.transportationView;
+
+    var transportationToggle = classNames('ui button', { 'positive active': transportationView });
+    var housingToggle = classNames('ui button', { 'positive active': !transportationView });
+
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="event content">
@@ -27,13 +44,16 @@ var EventModal = React.createClass({
                 </h2>
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
-              <div className="ui fluid attached positive join button" onClick={this.addAttendee}>Join this event</div>
+              <div className="ui two fluid attached full width buttons">
+                <div className={transportationToggle} onClick={this.toggleView.bind(this, 'transportation')}>Transportation</div>
+                <div className={housingToggle} onClick={this.toggleView.bind(this, 'housing')}>Housing</div>
+              </div>
               <table className="ui attached table">
                 <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Driving</th>
-                  <th>Riding with</th>
+                  <th>{transportationView ? 'Driving' : 'Hosting'}</th>
+                  <th>{transportationView ? 'Riding with' : 'Staying with'}</th>
                   <th>Notes</th>
                 </tr>
                 </thead>
@@ -42,8 +62,8 @@ var EventModal = React.createClass({
                   return (
                     <tr key={attendee.objectId}>
                       <td>{attendee.name}</td>
-                      <td>{attendee.carCapacity}</td>
-                      <td>{attendee.ridingWith}</td>
+                      <td>{transportationView ? attendee.carCapacity : attendee.houseCapacity}</td>
+                      <td>{transportationView ? attendee.ridingWith : attendee.stayingWith}</td>
                       <td>{attendee.notes}</td>
                     </tr>
                   );
@@ -52,14 +72,13 @@ var EventModal = React.createClass({
                 <tfoot>
                 <tr>
                   <th>{this.data.attendees.length} attendees</th>
-                  <th>2 drivers</th>
-                  <th>6 need a ride</th>
+                  <th>2 {transportationView ? 'drivers' : 'hosts'}</th>
+                  <th>6 need a {transportationView ? 'ride' : 'roof'}</th>
                   <th></th>
                 </tr>
                 </tfoot>
               </table>
-              <div className="ui fluid attached positive join button" onClick={this.addAttendee}>Join this event</div>
-              <div className="ui bottom attached segment"></div>
+              <div className="ui fluid bottom attached positive full width button" onClick={this.addAttendee}>Join this event</div>
             </div>
           </div>
           <div id="attendeeModal"></div>
