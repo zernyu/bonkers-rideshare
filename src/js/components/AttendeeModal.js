@@ -25,11 +25,11 @@ var AttendeeModal = React.createClass({
         notes: this.state.notes,
 
         driving: this.state.driving,
-        carCapacity: this.state.driving ? this.state.carCapacity : undefined,
+        carCapacity: this.state.driving ? parseInt(this.state.carCapacity) : undefined,
         ridingWith: !this.state.driving ? this.state.ridingWith : undefined,
 
         hosting: this.state.hosting,
-        hostingCapacity: this.state.hosting ? this.state.hostingCapacity : undefined,
+        hostingCapacity: this.state.hosting ? parseInt(this.state.hostingCapacity) : undefined,
         roomingWith: !this.state.hosting ? this.state.roomingWith : undefined
       });
 
@@ -133,7 +133,7 @@ var AttendeeModal = React.createClass({
                   <div className="field">
                     <label>Riding with</label>
                     <select valueLink={this.linkState('ridingWith')}>
-                      <option value="">Need a ride!</option>
+                      <option value="">I need a ride!</option>
                     </select>
                   </div>
                 </div>
@@ -161,7 +161,7 @@ var AttendeeModal = React.createClass({
                   <div className="field">
                     <label>Rooming with</label>
                     <select valueLink={this.linkState('roomingWith')}>
-                      <option value="">Need a floor to sleep on!</option>
+                      <option value="">I need a floor to sleep on!</option>
                     </select>
                   </div>
                 </div>

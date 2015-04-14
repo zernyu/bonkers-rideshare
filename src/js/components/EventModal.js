@@ -34,6 +34,10 @@ var EventModal = React.createClass({
     var transportationToggle = classNames('ui button', { 'positive active': transportationView });
     var housingToggle = classNames('ui button', { 'positive active': !transportationView });
 
+    var hosting = 0;
+    var needsHost = 0;
+    var totalAttendees = this.data.attendees.length;
+
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="event content">
@@ -58,12 +62,44 @@ var EventModal = React.createClass({
                 </tr>
                 </thead>
                 <tbody>
-                {this.data.attendees.length > 0 ? this.data.attendees.map(function (attendee) {
+                {totalAttendees > 0 ? this.data.attendees.map(function (attendee) {
+                  var capacity;
+                  var bumming;
+                  if (transportationView) {
+                    if (attendee.driving) {
+                      capacity = attendee.carCapacity + ' bikes';
+                      bumming = '';
+                      hosting += parseInt(attendee.carCapacity);
+                    } else {
+                      capacity = '';
+                      if (attendee.ridingWith) {
+                        bumming = attendee.ridingWith;
+                      } else {
+                        bumming = 'needs a ride';
+                        needsHost++;
+                      }
+                    }
+                  } else {
+                    if (attendee.hosting) {
+                      capacity = attendee.hostingCapacity + ' sleeping spots';
+                      bumming = '';
+                      hosting += parseInt(attendee.hostingCapacity);
+                    } else {
+                      capacity = '';
+                      if (attendee.roomingWith) {
+                        bumming = attendee.roomingWith;
+                      } else {
+                        bumming = 'needs a roof';
+                        needsHost++;
+                      }
+                    }
+                  }
+
                   return (
                       <tr key={attendee.objectId}>
                         <td>{attendee.name}</td>
-                        <td>{transportationView ? attendee.carCapacity : attendee.houseCapacity}</td>
-                        <td>{transportationView ? attendee.ridingWith : attendee.stayingWith}</td>
+                        <td>{capacity}</td>
+                        <td>{bumming}</td>
                         <td>{attendee.notes}</td>
                       </tr>
                   );
@@ -71,9 +107,9 @@ var EventModal = React.createClass({
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>{this.data.attendees.length} attendees</th>
-                  <th>0 are {transportationView ? 'driving' : 'hosting'}</th>
-                  <th>0 need a {transportationView ? 'ride' : 'roof'}</th>
+                  <th>{totalAttendees} attendees</th>
+                  <th>{hosting} {transportationView ? 'seats' : 'spots'} available</th>
+                  <th>{needsHost}/{totalAttendees} need a {transportationView ? 'ride' : 'roof'}</th>
                   <th></th>
                 </tr>
                 </tfoot>
