@@ -8,6 +8,7 @@
 
 .attendee.content {
   top: auto !important;
+  position: absolute !important;
 }
 
 .attendee .ui.form textarea {

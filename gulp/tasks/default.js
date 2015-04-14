@@ -16,6 +16,7 @@ var paths = {
   scripts: ['src/js/**/*.js'],
   style: ['src/style/**/*.css'],
   libraries: [
+    'bower_components/underscore/underscore.js',
     'bower_components/react/react-with-addons.js',
     'bower_components/parse/parse.js',
     'bower_components/ParseReact/dist/parse-react.js',

@@ -13,8 +13,41 @@ var AttendeeModal = React.createClass({
     this.setState({ hosting: hosting });
   },
 
+  addAttendee: function () {
+    var passed = _.every(this.refs, function (validationField, validationKey) {
+      return this.validateField(validationField, validationKey);
+    }, this);
+  },
+
+  validateField: function (field, validationKey) {
+    var validationError = undefined;
+
+    if (field.props.validate) {
+      var value = field.getDOMNode().value;
+      if (value !== '') {
+        validationError = 'Enter a number, doofus!';
+      } else if (isNaN(parseInt(value))) {
+        validationError = 'Enter a real number, doofus!';
+      }
+    }
+
+    // Reset validation error if validation passes and validation error is being displayed
+    if (validationError === undefined && this.state.validation[validationKey]) {
+      validationError = false;
+    }
+
+    if (validationError !== undefined) {
+      var validationState = this.state.validation;
+      validationState[validationKey] = validationError;
+      this.setState({ validation: validationState });
+    }
+
+    return !validationError;
+  },
+
   componentWillMount: function () {
     var defaultState = this.props.attendee;
+    defaultState.validation = {};
     this.setState(defaultState);
   },
 
@@ -29,9 +62,12 @@ var AttendeeModal = React.createClass({
     var hostingForm = classNames('field group', { 'hidden': !this.state.hosting });
     var roomingForm = classNames('field group', { 'hidden': this.state.hosting });
 
+    var carCapacityValidation = classNames('ui pointing red label', { 'hidden': !this.state.validation.carCapacity });
+    var hostingCapacityValidation = classNames('ui pointing red label', { 'hidden': !this.state.validation.hostingCapacity });
+
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
-          <div className="ui small basic modal event attendee content">
+          <div className="ui small basic modal attendee content">
             <div className="ui basic segment">
               <div className="ui top attached segment">
                 <h2 className="ui header">{this.state.name || 'I wanna race!'}
@@ -54,9 +90,12 @@ var AttendeeModal = React.createClass({
                 <div className={drivingForm}>
                   <div className="field">
                     <label>Car capacity</label>
-                    <input type="text"
+                    <input type="tel"
                            placeholder="Number of riders (including yourself)"
+                           ref="carCapacity"
+                           validate={this.state.driving}
                            value={this.state.carCapacity} />
+                    <div className={carCapacityValidation}>{this.state.validation.carCapacity}</div>
                   </div>
                 </div>
                 <div className={ridingForm}>
@@ -70,17 +109,20 @@ var AttendeeModal = React.createClass({
                 <div className="field">
                   <div className="ui two fluid buttons">
                     <div className={hostingToggle} onClick={this.hosting.bind(this, true)}>
-                      <i className="car icon"></i> Hosting</div>
+                      <i className="home icon"></i> Hosting</div>
                     <div className={roomingToggle} onClick={this.hosting.bind(this, false)}>
-                      <i className="handicap icon"></i> Bumming</div>
+                      <i className="trash icon"></i> Bumming</div>
                   </div>
                 </div>
                 <div className={hostingForm}>
                   <div className="field">
                     <label>Housing capacity</label>
-                    <input type="text"
+                    <input type="tel"
                            placeholder="Number of people (including yourself) who can stay with you"
+                           ref="hostingCapacity"
+                           validate={this.state.hosting}
                            value={this.state.hostingCapacity} />
+                    <div className={hostingCapacityValidation}>{this.state.validation.hostingCapacity}</div>
                   </div>
                 </div>
                 <div className={roomingForm}>
