@@ -3,12 +3,16 @@ var EventModal = React.createClass({
 
   observe: function () {
     return {
-      attendees: (new Parse.Query('Attendee')).equalTo('eventId', this.props.event.objectId).descending('createdAt')
+      attendees: (new Parse.Query('Attendee'))
+          .equalTo('eventId', this.props.event.objectId)
+          .include('ridingWith')
+          .include('roomingWith')
+          .descending('createdAt')
     };
   },
 
   editAttendee: function (attendee) {
-    var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: attendee || {}});
+    var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: _.clone(attendee) || {}});
     React.render(attendeeModal, document.getElementById('attendeeModal'));
   },
 
@@ -73,7 +77,7 @@ var EventModal = React.createClass({
                     } else {
                       capacity = '';
                       if (attendee.ridingWith) {
-                        bumming = attendee.ridingWith;
+                        bumming = attendee.ridingWith.name;
                       } else {
                         bumming = 'needs a ride';
                         needsHost++;
@@ -87,7 +91,7 @@ var EventModal = React.createClass({
                     } else {
                       capacity = '';
                       if (attendee.roomingWith) {
-                        bumming = attendee.roomingWith;
+                        bumming = attendee.roomingWith.name;
                       } else {
                         bumming = 'needs a roof';
                         needsHost++;

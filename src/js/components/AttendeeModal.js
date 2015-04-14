@@ -1,3 +1,4 @@
+var Attendee = Parse.Object.extend('Attendee');
 var AttendeeModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
@@ -19,6 +20,9 @@ var AttendeeModal = React.createClass({
     }, this);
 
     if (passed) {
+      var driver = this.state.ridingWith ? new Attendee({ id: this.state.ridingWith }) : undefined;
+      var host = this.state.roomingWith ? new Attendee({ id: this.state.roomingWith }) : undefined;
+
       var attendee = {
         eventId: this.props.event.objectId,
         name: this.state.name,
@@ -26,17 +30,26 @@ var AttendeeModal = React.createClass({
 
         driving: this.state.driving,
         carCapacity: this.state.driving ? parseInt(this.state.carCapacity) : undefined,
-        ridingWith: !this.state.driving ? this.state.ridingWith : undefined,
+        ridingWith: !this.state.driving ? driver : undefined,
 
         hosting: this.state.hosting,
         hostingCapacity: this.state.hosting ? parseInt(this.state.hostingCapacity) : undefined,
-        roomingWith: !this.state.hosting ? this.state.roomingWith : undefined
+        roomingWith: !this.state.hosting ? host : undefined
       };
 
       var save = this.props.attendee.objectId
           ? ParseReact.Mutation.Set(this.props.attendee, attendee)
           : ParseReact.Mutation.Create('Attendee', attendee);
       save.dispatch();
+
+      // TODO: hol' up... ParseReact is finnicky [fu]
+      //if (this.props.attendee.ridingWith && !driver) {
+      //  ParseReact.Mutation.Unset(this.props.attendee, 'ridingWith').dispatch();
+      //}
+      //
+      //if (this.props.attendee.roomingWith && !host) {
+      //  ParseReact.Mutation.Unset(this.props.attendee, 'roomingWith').dispatch();
+      //}
 
       this.closeModal();
     }
@@ -76,6 +89,14 @@ var AttendeeModal = React.createClass({
 
   componentWillMount: function () {
     var preloadState = this.props.attendee;
+
+    if (_.isObject(preloadState.ridingWith)) {
+      preloadState.ridingWith = preloadState.ridingWith.objectId;
+    }
+    if (_.isObject(preloadState.roomingWith)) {
+      preloadState.roomingWith = preloadState.roomingWith.objectId;
+    }
+
     this.setState(preloadState);
   },
 
@@ -136,9 +157,7 @@ var AttendeeModal = React.createClass({
                 <div className={ridingForm}>
                   <div className="field">
                     <label>Riding with</label>
-                    <select valueLink={this.linkState('ridingWith')}>
-                      <option value="">I need a ride!</option>
-                    </select>
+                    <DriverSelect eventId={this.props.event.objectId} valueLink={this.linkState('ridingWith')} />
                   </div>
                 </div>
                 <div className="field">
@@ -164,9 +183,7 @@ var AttendeeModal = React.createClass({
                 <div className={roomingForm}>
                   <div className="field">
                     <label>Rooming with</label>
-                    <select valueLink={this.linkState('roomingWith')}>
-                      <option value="">I need a floor to sleep on!</option>
-                    </select>
+                    <HostSelect eventId={this.props.event.objectId} valueLink={this.linkState('roomingWith')} />
                   </div>
                 </div>
                 <div className="field">
