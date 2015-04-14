@@ -27,6 +27,11 @@
   font-style: italic;
 }
 
+.event.content tr:hover {
+  cursor: pointer;
+  color: rgb(102, 193, 123);
+}
+
 .event.content .full.width {
   margin: 0em -1px;
   width: -webkit-calc(100% + 2px);

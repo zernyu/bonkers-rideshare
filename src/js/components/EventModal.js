@@ -1,3 +1,5 @@
+var dragging = false;
+
 var EventModal = React.createClass({
   mixins: [ParseReact.Mixin],
 
@@ -7,17 +9,23 @@ var EventModal = React.createClass({
           .equalTo('eventId', this.props.event.objectId)
           .include('ridingWith')
           .include('roomingWith')
-          .descending('createdAt')
+          .ascending('name')
     };
   },
 
   editAttendee: function (attendee) {
+    if (dragging) return;
+
     var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: _.clone(attendee) || {}});
     React.render(attendeeModal, document.getElementById('attendeeModal'));
   },
 
   closeModal: function () {
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
+  },
+
+  handleTouch: function (event) {
+    dragging = event.type === 'touchstart' ? false : true;
   },
 
   toggleView: function (switchTo) {
@@ -100,7 +108,11 @@ var EventModal = React.createClass({
                   }
 
                   return (
-                      <tr key={attendee.objectId} onClick={this.editAttendee.bind(this, attendee)}>
+                      <tr key={attendee.objectId}
+                          onClick={this.editAttendee.bind(this, attendee)}
+                          onTouchEnd={this.editAttendee.bind(this, attendee)}
+                          onTouchStart={this.handleTouch}
+                          onTouchMove={this.handleTouch}>
                         <td>{attendee.name}</td>
                         <td>{capacity}</td>
                         <td>{bumming}</td>
@@ -121,7 +133,6 @@ var EventModal = React.createClass({
               <div className="ui fluid bottom attached positive full width button" onClick={this.editAttendee}>Join this event</div>
             </div>
           </div>
-          <div id="attendeeModal"></div>
         </div>
     );
   }
