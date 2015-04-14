@@ -34,20 +34,6 @@ var EventModal = React.createClass({
     var transportationToggle = classNames('ui button', { 'positive active': transportationView });
     var housingToggle = classNames('ui button', { 'positive active': !transportationView });
 
-    var attendees = this.data.attendees.length === 0
-        ? <tr><td>Loading...</td></tr>
-        :
-        this.data.attendees.map(function (attendee) {
-          return (
-              <tr key={attendee.objectId}>
-                <td>{attendee.name}</td>
-                <td>{transportationView ? attendee.carCapacity : attendee.houseCapacity}</td>
-                <td>{transportationView ? attendee.ridingWith : attendee.stayingWith}</td>
-                <td>{attendee.notes}</td>
-              </tr>
-          );
-        });
-
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="event content">
@@ -72,7 +58,16 @@ var EventModal = React.createClass({
                 </tr>
                 </thead>
                 <tbody>
-                {attendees}
+                {this.data.attendees.length > 0 ? this.data.attendees.map(function (attendee) {
+                  return (
+                      <tr key={attendee.objectId}>
+                        <td>{attendee.name}</td>
+                        <td>{transportationView ? attendee.carCapacity : attendee.houseCapacity}</td>
+                        <td>{transportationView ? attendee.ridingWith : attendee.stayingWith}</td>
+                        <td>{attendee.notes}</td>
+                      </tr>
+                  );
+                }) : <tr><td>Loading...</td></tr>}
                 </tbody>
                 <tfoot>
                 <tr>

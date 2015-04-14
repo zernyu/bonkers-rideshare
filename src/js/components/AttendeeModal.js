@@ -17,6 +17,25 @@ var AttendeeModal = React.createClass({
     var passed = _.every(this.refs, function (validationField, validationKey) {
       return this.validateField(validationField, validationKey);
     }, this);
+
+    if (passed) {
+      var attendee = ParseReact.Mutation.Create('Attendee', {
+        eventId: this.props.event.objectId,
+        name: this.state.name,
+        notes: this.state.notes,
+
+        driving: this.state.driving,
+        carCapacity: this.state.driving ? this.state.carCapacity : undefined,
+        ridingWith: !this.state.driving ? this.state.ridingWith : undefined,
+
+        hosting: this.state.hosting,
+        hostingCapacity: this.state.hosting ? this.state.hostingCapacity : undefined,
+        roomingWith: !this.state.hosting ? this.state.roomingWith : undefined
+      });
+
+      attendee.dispatch();
+      this.closeModal();
+    }
   },
 
   validateField: function (field, validationKey) {
@@ -24,9 +43,9 @@ var AttendeeModal = React.createClass({
 
     if (field.props.validate) {
       var value = field.getDOMNode().value;
-      if (value !== '') {
-        validationError = 'Enter a number, doofus!';
-      } else if (isNaN(parseInt(value))) {
+      if (_.isEmpty(value)) {
+        validationError = 'You left this blank, doofus!';
+      } else if (field.props.validationType === 'integer' && _.isNaN(parseInt(value))) {
         validationError = 'Enter a real number, doofus!';
       }
     }
@@ -45,10 +64,15 @@ var AttendeeModal = React.createClass({
     return !validationError;
   },
 
+  getInitialState: function () {
+    return {
+      validation: {}
+    }
+  },
+
   componentWillMount: function () {
-    var defaultState = this.props.attendee;
-    defaultState.validation = {};
-    this.setState(defaultState);
+    var preloadState = this.props.attendee;
+    this.setState(preloadState);
   },
 
   render: function () {
@@ -62,6 +86,7 @@ var AttendeeModal = React.createClass({
     var hostingForm = classNames('field group', { 'hidden': !this.state.hosting });
     var roomingForm = classNames('field group', { 'hidden': this.state.hosting });
 
+    var nameValidation = classNames('ui pointing red label', { 'hidden': !this.state.validation.name });
     var carCapacityValidation = classNames('ui pointing red label', { 'hidden': !this.state.validation.carCapacity });
     var hostingCapacityValidation = classNames('ui pointing red label', { 'hidden': !this.state.validation.hostingCapacity });
 
@@ -77,7 +102,12 @@ var AttendeeModal = React.createClass({
               <div className="ui attached form segment">
                 <div className="field">
                   <label>Name</label>
-                  <input type="text" valueLink={this.linkState('name')} />
+                  <input type="text"
+                         placeholder="Werner Mannmithammer"
+                         ref="name"
+                         validate={true}
+                         valueLink={this.linkState('name')} />
+                  <div className={nameValidation}>{this.state.validation.name}</div>
                 </div>
                 <div className="field">
                   <div className="ui two fluid buttons">
@@ -94,14 +124,15 @@ var AttendeeModal = React.createClass({
                            placeholder="Number of riders (including yourself)"
                            ref="carCapacity"
                            validate={this.state.driving}
-                           value={this.state.carCapacity} />
+                           validationType="integer"
+                           valueLink={this.linkState('carCapacity')} />
                     <div className={carCapacityValidation}>{this.state.validation.carCapacity}</div>
                   </div>
                 </div>
                 <div className={ridingForm}>
                   <div className="field">
                     <label>Riding with</label>
-                    <select value={this.state.ridingWith}>
+                    <select valueLink={this.linkState('ridingWith')}>
                       <option value="">Need a ride!</option>
                     </select>
                   </div>
@@ -121,21 +152,22 @@ var AttendeeModal = React.createClass({
                            placeholder="Number of people (including yourself) who can stay with you"
                            ref="hostingCapacity"
                            validate={this.state.hosting}
-                           value={this.state.hostingCapacity} />
+                           validationType="integer"
+                           valueLink={this.linkState('hostingCapacity')} />
                     <div className={hostingCapacityValidation}>{this.state.validation.hostingCapacity}</div>
                   </div>
                 </div>
                 <div className={roomingForm}>
                   <div className="field">
                     <label>Rooming with</label>
-                    <select value={this.state.roomingWith}>
+                    <select valueLink={this.linkState('roomingWith')}>
                       <option value="">Need a floor to sleep on!</option>
                     </select>
                   </div>
                 </div>
                 <div className="field">
                   <label>Notes</label>
-                  <textarea placeholder="Leaving from Star Lounge at 8am, bringing a teddy bear" value={this.state.notes}></textarea>
+                  <textarea placeholder="Leaving from Star Lounge at 8am, bringing a teddy bear" valueLink={this.linkState('notes')}></textarea>
                 </div>
               </div>
               <div className="ui bottom attached segment">
