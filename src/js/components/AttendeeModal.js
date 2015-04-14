@@ -1,6 +1,24 @@
-var Attendee = Parse.Object.extend('Attendee');
 var AttendeeModal = React.createClass({
-  mixins: [React.addons.LinkedStateMixin],
+  mixins: [React.addons.LinkedStateMixin, ParseReact.Mixin],
+
+  observe: function () {
+    return {
+      hosts: (new Parse.Query('Attendee'))
+          .equalTo('eventId', this.props.event.objectId)
+          .equalTo('hosting', true)
+          .include('ridingWith')
+          .include('roomingWith')
+          .ascending('name'),
+
+      drivers: (new Parse.Query('Attendee'))
+          .equalTo('eventId', this.props.event.objectId)
+          .equalTo('driving', true)
+          .include('ridingWith')
+          .include('roomingWith')
+          .ascending('name')
+    };
+  },
+
 
   closeModal: function () {
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
@@ -14,14 +32,20 @@ var AttendeeModal = React.createClass({
     this.setState({ hosting: hosting });
   },
 
+  _getAttendee: function (objectId, resultKey) {
+    var attendee = _.clone(this.data[resultKey].filter(function (attendee) { return attendee.objectId === objectId })[0]);
+    if (attendee) attendee.__type = 'Pointer';
+    return attendee;
+  },
+
   addAttendee: function () {
     var passed = _.every(this.refs, function (validationField, validationKey) {
       return this.validateField(validationField, validationKey);
     }, this);
 
     if (passed) {
-      var driver = this.state.ridingWith ? new Attendee({ id: this.state.ridingWith }) : undefined;
-      var host = this.state.roomingWith ? new Attendee({ id: this.state.roomingWith }) : undefined;
+      var driver = this.state.ridingWith ? this._getAttendee(this.state.ridingWith, 'drivers') : undefined;
+      var host = this.state.roomingWith ? this._getAttendee(this.state.roomingWith, 'hosts') : undefined;
 
       var attendee = {
         eventId: this.props.event.objectId,
@@ -42,14 +66,13 @@ var AttendeeModal = React.createClass({
           : ParseReact.Mutation.Create('Attendee', attendee);
       save.dispatch();
 
-      // TODO: hol' up... ParseReact is finnicky [fu]
-      //if (this.props.attendee.ridingWith && !driver) {
-      //  ParseReact.Mutation.Unset(this.props.attendee, 'ridingWith').dispatch();
-      //}
-      //
-      //if (this.props.attendee.roomingWith && !host) {
-      //  ParseReact.Mutation.Unset(this.props.attendee, 'roomingWith').dispatch();
-      //}
+      if (this.props.attendee.ridingWith && !driver) {
+        ParseReact.Mutation.Unset(this.props.attendee, 'ridingWith').dispatch();
+      }
+
+      if (this.props.attendee.roomingWith && !host) {
+        ParseReact.Mutation.Unset(this.props.attendee, 'roomingWith').dispatch();
+      }
 
       this.closeModal();
     }
@@ -157,7 +180,7 @@ var AttendeeModal = React.createClass({
                 <div className={ridingForm}>
                   <div className="field">
                     <label>Riding with</label>
-                    <DriverSelect eventId={this.props.event.objectId} valueLink={this.linkState('ridingWith')} />
+                    <DriverSelect options={this.data.drivers} valueLink={this.linkState('ridingWith')} />
                   </div>
                 </div>
                 <div className="field">
@@ -183,7 +206,7 @@ var AttendeeModal = React.createClass({
                 <div className={roomingForm}>
                   <div className="field">
                     <label>Rooming with</label>
-                    <HostSelect eventId={this.props.event.objectId} valueLink={this.linkState('roomingWith')} />
+                    <HostSelect options={this.data.hosts} valueLink={this.linkState('roomingWith')} />
                   </div>
                 </div>
                 <div className="field">
