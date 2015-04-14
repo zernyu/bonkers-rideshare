@@ -7,8 +7,8 @@ var EventModal = React.createClass({
     };
   },
 
-  addAttendee: function () {
-    var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: {}});
+  editAttendee: function (attendee) {
+    var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: attendee || {}});
     React.render(attendeeModal, document.getElementById('attendeeModal'));
   },
 
@@ -62,7 +62,7 @@ var EventModal = React.createClass({
                 </tr>
                 </thead>
                 <tbody>
-                {totalAttendees > 0 ? this.data.attendees.map(function (attendee) {
+                {this.pendingQueries().length === 0 ? this.data.attendees.map(function (attendee) {
                   var capacity;
                   var bumming;
                   if (transportationView) {
@@ -96,14 +96,14 @@ var EventModal = React.createClass({
                   }
 
                   return (
-                      <tr key={attendee.objectId}>
+                      <tr key={attendee.objectId} onClick={this.editAttendee.bind(this, attendee)}>
                         <td>{attendee.name}</td>
                         <td>{capacity}</td>
                         <td>{bumming}</td>
                         <td>{attendee.notes}</td>
                       </tr>
                   );
-                }) : <tr><td>Loading...</td></tr>}
+                }, this) : <tr><td>Loading...</td></tr>}
                 </tbody>
                 <tfoot>
                 <tr>
@@ -114,7 +114,7 @@ var EventModal = React.createClass({
                 </tr>
                 </tfoot>
               </table>
-              <div className="ui fluid bottom attached positive full width button" onClick={this.addAttendee}>Join this event</div>
+              <div className="ui fluid bottom attached positive full width button" onClick={this.editAttendee}>Join this event</div>
             </div>
           </div>
           <div id="attendeeModal"></div>

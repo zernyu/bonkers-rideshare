@@ -19,7 +19,7 @@ var AttendeeModal = React.createClass({
     }, this);
 
     if (passed) {
-      var attendee = ParseReact.Mutation.Create('Attendee', {
+      var attendee = {
         eventId: this.props.event.objectId,
         name: this.state.name,
         notes: this.state.notes,
@@ -31,9 +31,13 @@ var AttendeeModal = React.createClass({
         hosting: this.state.hosting,
         hostingCapacity: this.state.hosting ? parseInt(this.state.hostingCapacity) : undefined,
         roomingWith: !this.state.hosting ? this.state.roomingWith : undefined
-      });
+      };
 
-      attendee.dispatch();
+      var save = this.props.attendee.objectId
+          ? ParseReact.Mutation.Set(this.props.attendee, attendee)
+          : ParseReact.Mutation.Create('Attendee', attendee);
+      save.dispatch();
+
       this.closeModal();
     }
   },
@@ -173,7 +177,8 @@ var AttendeeModal = React.createClass({
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
                   <div className="ui button" onClick={this.closeModal}>Cancel</div>
-                  <div className="ui right labeled positive icon button" onClick={this.addAttendee}>Join
+                  <div className="ui right labeled positive icon button" onClick={this.addAttendee}>
+                    {this.props.attendee.objectId ? 'Update' : 'Join'}
                     <i className="right chevron icon"></i>
                   </div>
                 </div>
