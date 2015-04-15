@@ -24,10 +24,6 @@ var EventModal = React.createClass({
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
-  handleTouch: function (event) {
-    dragging = event.type === 'touchstart' ? false : true;
-  },
-
   toggleView: function (switchTo) {
     this.setState({
       transportationView: switchTo === 'transportation'
@@ -108,11 +104,7 @@ var EventModal = React.createClass({
                   }
 
                   return (
-                      <tr key={attendee.objectId}
-                          onClick={this.editAttendee.bind(this, attendee)}
-                          onTouchEnd={this.editAttendee.bind(this, attendee)}
-                          onTouchStart={this.handleTouch}
-                          onTouchMove={this.handleTouch}>
+                      <tr key={attendee.objectId} onClick={this.editAttendee.bind(this, attendee)}>
                         <td>{attendee.name}</td>
                         <td>{capacity}</td>
                         <td>{bumming}</td>
@@ -130,7 +122,7 @@ var EventModal = React.createClass({
                 </tr>
                 </tfoot>
               </table>
-              <div className="ui fluid bottom attached positive full width button" onClick={this.editAttendee}>Join this event</div>
+              <button className="ui fluid bottom attached positive full width button" onClick={this.editAttendee}>Join this event</button>
             </div>
           </div>
         </div>

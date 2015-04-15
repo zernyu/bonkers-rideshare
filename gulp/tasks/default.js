@@ -43,7 +43,7 @@ gulp.task('html', ['scripts', 'style', 'libraries'], function () {
 
   return gulp.src(paths.html)
       .pipe(handleErrors(errorHandler))
-      .pipe(inject(series(libSources, appSources), {ignorePath: 'build/'}))
+      .pipe(inject(series(libSources, appSources), {ignorePath: 'build', addRootSlash: false}))
       .pipe(gulp.dest('build'))
       .pipe(connect.reload());
 });
