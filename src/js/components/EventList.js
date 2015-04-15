@@ -1,3 +1,5 @@
+var Event = require('./Event');
+
 var EventList = React.createClass({
   mixins: [ParseReact.Mixin],
 
@@ -18,7 +20,4 @@ var EventList = React.createClass({
   }
 });
 
-React.render(
-    <EventList />,
-    document.getElementById('eventsRoot')
-);
+module.exports = EventList

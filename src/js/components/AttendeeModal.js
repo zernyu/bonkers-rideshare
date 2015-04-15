@@ -1,3 +1,6 @@
+var DriverSelect = require('./DriverSelect');
+var HostSelect = require('./HostSelect');
+
 var AttendeeModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ParseReact.Mixin],
 
@@ -229,3 +232,5 @@ var AttendeeModal = React.createClass({
     );
   }
 });
+
+module.exports = AttendeeModal;

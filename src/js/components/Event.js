@@ -1,7 +1,8 @@
+var EventModal = require('./EventModal');
+
 var Event = React.createClass({
   openEvent: function () {
-    var eventModal = React.createElement(EventModal, {event: this.props.data});
-    React.render(eventModal, document.getElementById('eventModal'));
+    React.render(<EventModal event={this.props.data} />, document.getElementById('eventModal'));
   },
 
   render: function () {
@@ -13,3 +14,5 @@ var Event = React.createClass({
     );
   }
 });
+
+module.exports = Event;

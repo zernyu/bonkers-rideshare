@@ -1,3 +1,5 @@
+var AttendeeModal = require('./AttendeeModal');
+
 var dragging = false;
 
 var EventModal = React.createClass({
@@ -15,9 +17,7 @@ var EventModal = React.createClass({
 
   editAttendee: function (attendee) {
     if (dragging) return;
-
-    var attendeeModal = React.createElement(AttendeeModal, {event: this.props.event, attendee: _.clone(attendee) || {}});
-    React.render(attendeeModal, document.getElementById('attendeeModal'));
+    React.render(<AttendeeModal event={this.props.event} attendee={_.clone(attendee) || {}} />, document.getElementById('attendeeModal'));
   },
 
   closeModal: function () {
@@ -129,3 +129,5 @@ var EventModal = React.createClass({
     );
   }
 });
+
+module.exports = EventModal;

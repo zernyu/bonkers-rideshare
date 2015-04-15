@@ -14,3 +14,5 @@ var HostSelect = React.createClass({
     );
   }
 });
+
+module.exports = HostSelect;

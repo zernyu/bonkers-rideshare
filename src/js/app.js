@@ -1,6 +1,7 @@
-(function () {
-  Parse.initialize(
-      "<!-- substitute:applicationId -->",
-      "<!-- substitute:javascriptId -->"
-  );
-})(window);
+Parse.initialize(
+    "<!-- substitute:applicationId -->",
+    "<!-- substitute:javascriptId -->"
+);
+
+var Events = require('./components/Events');
+React.render(<Events />, document.getElementById('app'));
