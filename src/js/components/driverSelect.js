@@ -14,3 +14,5 @@ var DriverSelect = React.createClass({
     );
   }
 });
+
+module.exports = DriverSelect;

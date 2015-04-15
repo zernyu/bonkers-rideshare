@@ -10,7 +10,6 @@ var errorHandler = require('../util/handleErrors');
 var substituter = require('gulp-substituter');
 
 // JS build tools
-var react = require('gulp-react');
 var uglify = require('gulp-uglify');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
@@ -23,7 +22,6 @@ var config = require('../config');
 var paths = {
   html: 'src/html/index.html',
   scripts: {
-    all: 'src/js/**/*.js',
     entry: './src/js/app.js'
   },
   style: 'src/style/**/*.css',
@@ -64,15 +62,6 @@ gulp.task('html', function () {
       .pipe(handleErrors(errorHandler))
       .pipe(inject(series(libSources, appSources), {ignorePath: paths.build.root, addRootSlash: false}))
       .pipe(gulp.dest(paths.build.root))
-      .pipe(connect.reload());
-});
-
-gulp.task('scripts', function () {
-  return gulp.src(paths.scripts.all)
-      .pipe(handleErrors(errorHandler))
-      .pipe(react())
-      .pipe(substituter(config.parse))
-      .pipe(gulp.dest('build/js'))
       .pipe(connect.reload());
 });
 
