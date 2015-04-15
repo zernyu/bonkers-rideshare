@@ -7,14 +7,14 @@ var AttendeeModal = React.createClass({
   observe: function () {
     return {
       hosts: (new Parse.Query('Attendee'))
-          .equalTo('eventId', this.props.event.objectId)
+          .equalTo('eventId', this.props.eventId)
           .equalTo('hosting', true)
           .include('ridingWith')
           .include('roomingWith')
           .ascending('name'),
 
       drivers: (new Parse.Query('Attendee'))
-          .equalTo('eventId', this.props.event.objectId)
+          .equalTo('eventId', this.props.eventId)
           .equalTo('driving', true)
           .include('ridingWith')
           .include('roomingWith')
@@ -51,7 +51,7 @@ var AttendeeModal = React.createClass({
       var host = this.state.roomingWith ? this._getAttendee(this.state.roomingWith, 'hosts') : undefined;
 
       var attendee = {
-        eventId: this.props.event.objectId,
+        eventId: this.props.eventId,
         name: this.state.name,
         notes: this.state.notes,
 
