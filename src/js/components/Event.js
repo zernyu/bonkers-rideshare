@@ -1,3 +1,4 @@
+var React = require('react/addons');
 var EventModal = require('./EventModal');
 
 var Event = React.createClass({

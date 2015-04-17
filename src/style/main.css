@@ -23,7 +23,7 @@
   margin: 0;
 }
 
-.event.content tfoot {
+.event.content tfoot th {
   font-style: italic;
 }
 

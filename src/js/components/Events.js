@@ -1,6 +1,12 @@
+var React = require('react/addons');
+var AddEventModal = require('./AddEventModal');
 var EventList = require('./EventList');
 
 var Events = React.createClass({
+  addEvent: function () {
+    React.render(<AddEventModal />, document.getElementById('eventModal'));
+  },
+
   render: function () {
     return (
         <div>
@@ -16,13 +22,18 @@ var Events = React.createClass({
 
             <div className="row">
               <div className="column">
-                <h2 className="ui header">
+                <h2 className="ui left floated header">
                   <i className="checkered flag icon"></i>
 
                   <div className="content">Events</div>
                 </h2>
+                <button className="ui right floated positive labeled icon button" onClick={this.addEvent}>
+                  Add Event
+                  <i className="plus icon"></i>
+                </button>
+                <div className="ui hidden clearing divider"></div>
 
-                <EventList className="ui basic segment" />
+                <EventList className="ui basic segment"/>
               </div>
             </div>
           </div>

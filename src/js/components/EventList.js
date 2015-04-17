@@ -1,3 +1,6 @@
+var React = require('react/addons');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
 var Event = require('./Event');
 
 var EventList = React.createClass({
@@ -20,4 +23,4 @@ var EventList = React.createClass({
   }
 });
 
-module.exports = EventList
+module.exports = EventList;

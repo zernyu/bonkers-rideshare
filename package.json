@@ -9,7 +9,15 @@
   },
   "author": "Zernyu Chou <zernyu@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "classnames": "^1.2.0",
+    "moment": "^2.10.2",
+    "parse": "^1.4.2",
+    "parse-react": "^0.1.4",
+    "react": "^0.13.1",
+    "react-day-picker": "^0.8.0",
+    "underscore": "^1.8.3"
+  },
   "devDependencies": {
     "browserify": "^9.0.8",
     "del": "^1.1.1",

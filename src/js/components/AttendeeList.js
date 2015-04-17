@@ -1,3 +1,7 @@
+var React = require('react/addons');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
 var AttendeeList = React.createClass({
   mixins: [ParseReact.Mixin],
 

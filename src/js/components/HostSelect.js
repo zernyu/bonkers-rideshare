@@ -1,3 +1,5 @@
+var React = require('react/addons');
+
 var HostSelect = React.createClass({
   onChange: function() {
     this.props.valueLink.requestChange(this.getDOMNode().value);

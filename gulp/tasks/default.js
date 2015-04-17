@@ -24,13 +24,8 @@ var paths = {
   scripts: {
     entry: './src/js/app.js'
   },
-  style: 'src/style/**/*.css',
-  libraries: [
-    'bower_components/underscore/underscore.js',
-    'bower_components/react/react-with-addons.js',
-    'bower_components/parse/parse.js',
-    'bower_components/ParseReact/dist/parse-react.js',
-    'bower_components/classnames/index.js',
+  style: [
+    'src/style/**/*.css',
     'bower_components/semantic-ui/dist/semantic.css',
     'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
   ],
@@ -51,7 +46,7 @@ gulp.task('connect', function () {
 });
 
 gulp.task('html', function () {
-  var appPaths = [paths.build.root + '/css/*.css'];
+  var appPaths = [paths.build.root + '/css/**/*.css'];
   if (process.env.environment === 'production') {
     gutil.log(gutil.colors.yellow('Building in Production mode'));
     appPaths.push(paths.build.dist + '/' + paths.build.minified);
@@ -71,22 +66,15 @@ gulp.task('html', function () {
 });
 
 gulp.task('style', function () {
-  return gulp.src(paths.style)
+  return gulp.src(paths.style, {base: './bower_components'})
       .pipe(handleErrors(errorHandler))
       .pipe(gulp.dest(paths.build.root + '/css'))
       .pipe(connect.reload());
 });
 
-gulp.task('libraries', function () {
-  return gulp.src(paths.libraries, {base: './bower_components'})
-      .pipe(handleErrors(errorHandler))
-      .pipe(gulp.dest(paths.build.src + '/libs'));
-});
-
-gulp.task('watch', ['style', 'libraries'], function () {
+gulp.task('watch', ['style'], function () {
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.style, ['style']);
-  gulp.watch(paths.libraries, ['libraries']);
 
   var watcher = watchify(browserify({
     entries: [paths.scripts.entry],

@@ -1,7 +1,12 @@
+var _ = require('underscore');
+var React = require('react/addons');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+var classNames = require('classnames');
 var DriverSelect = require('./DriverSelect');
 var HostSelect = require('./HostSelect');
 
-var AttendeeModal = React.createClass({
+var AddAttendeeModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ParseReact.Mixin],
 
   observe: function () {
@@ -219,11 +224,11 @@ var AttendeeModal = React.createClass({
               </div>
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
-                  <div className="ui button" onClick={this.closeModal}>Cancel</div>
-                  <div className="ui right labeled positive icon button" onClick={this.addAttendee}>
+                  <button className="ui button" onClick={this.closeModal}>Cancel</button>
+                  <button className="ui right labeled positive icon button" onClick={this.addAttendee}>
                     {this.props.attendee.objectId ? 'Update' : 'Join'}
                     <i className="right chevron icon"></i>
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
@@ -233,4 +238,4 @@ var AttendeeModal = React.createClass({
   }
 });
 
-module.exports = AttendeeModal;
+module.exports = AddAttendeeModal;

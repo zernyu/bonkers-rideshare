@@ -1,3 +1,6 @@
+var React = require('react/addons');
+var Parse = require('parse').Parse;
+
 Parse.initialize(
     "<!-- substitute:applicationId -->",
     "<!-- substitute:javascriptId -->"

@@ -1,7 +1,8 @@
+var _ = require('underscore');
+var React = require('react/addons');
+var classNames = require('classnames');
 var AttendeeList = require('./AttendeeList');
-var AttendeeModal = require('./AttendeeModal');
-
-var dragging = false;
+var AddAttendeeModal = require('./AddAttendeeModal');
 
 var EventModal = React.createClass({
   closeModal: function () {
@@ -15,9 +16,8 @@ var EventModal = React.createClass({
   },
 
   editAttendee: function (attendee) {
-    if (dragging) return;
     React.render(
-        <AttendeeModal eventId={this.props.event.objectId} attendee={_.clone(attendee) || {}}/>,
+        <AddAttendeeModal eventId={this.props.event.objectId} attendee={_.clone(attendee) || {}}/>,
         document.getElementById('attendeeModal')
     );
   },
