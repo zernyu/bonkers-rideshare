@@ -23,53 +23,25 @@ var AddEventModal = React.createClass({
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
-  handleDateChange: function (date) {
-    this.setState({
-      date: date
-    });
-  },
-
-  handleInputFocus(e) {
-    this.showMonthForCurrentValue();
-  },
-
-  handleInputChange(e) {
-    const value = e.target.value;
-    this.setState({
-      value: value
-    }, this.showMonthForCurrentValue);
-  },
-
   handleDayTouchTap(day, modifiers, e) {
     if (modifiers.indexOf('disabled') === -1) {
       this.setState({
-        value: dateToValue(day)
+        date: dateToValue(day)
       });
     }
   },
 
-  showMonthForCurrentValue() {
-    const day = valueToDate(this.state.value);
-
-    if (!day) {
-      return;
-    }
-
-    // if the current state is a valid day, show its month on the calendar
-    this.refs.daypicker.showMonth(day.startOf('month'));
-  },
-
   getModifiers() {
     var modifiers = {
-      today: function(day) {
+      today: function (day) {
         return isSameDay(moment(), day);
       },
-      disabled: function(day) {
+      disabled: function (day) {
         // disable past days
         return day.diff(moment(), 'day') < 0;
       },
-      selected: function(day) {
-        const value = valueToDate(this.state.value);
+      selected: function (day) {
+        const value = valueToDate(this.state.date);
 
         if (modifiers.disabled(day) || !value) {
           // value may be null if not a valid date
@@ -85,15 +57,14 @@ var AddEventModal = React.createClass({
 
   getInitialState: function () {
     return {
-      date: moment(),
-      value: dateToValue(moment()),
+      date: dateToValue(moment()),
       validation: {}
     };
   },
 
   render: function () {
     var nameValidation = classNames('ui pointing red label', {'hidden': !this.state.validation.name});
-    var value = this.state.value;
+    var value = this.state.date;
 
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
@@ -115,12 +86,13 @@ var AddEventModal = React.createClass({
                 </div>
                 <div className="field">
                   <label>Date</label>
-                  <input
-                    type="text"
-                    value={value}
-                    placeholder="YYYY-MM-DD"
-                    onChange={this.handleInputChange}
-                    onFocus={this.handleInputFocus} />
+                  <DayPicker
+                      ref="daypicker"
+                      enableOutsideDays={true}
+                      initialMonth={ valueToDate(value) || moment() }
+                      numberOfMonths={1}
+                      modifiers={ this.getModifiers() }
+                      onDayTouchTap={this.handleDayTouchTap}/>
                 </div>
               </div>
               <div className="ui bottom attached segment">
@@ -134,14 +106,6 @@ var AddEventModal = React.createClass({
               </div>
             </div>
           </div>
-
-          <DayPicker
-              ref="daypicker"
-              enableOutsideDays={true}
-              initialMonth={ valueToDate(value) || moment() }
-              numberOfMonths={1}
-              modifiers={ this.getModifiers() }
-              onDayTouchTap={this.handleDayTouchTap} />
         </div>
     );
   }
