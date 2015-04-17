@@ -24,11 +24,13 @@ var paths = {
   scripts: {
     entry: './src/js/app.js'
   },
-  style: [
-    'src/style/**/*.css',
-    'bower_components/semantic-ui/dist/semantic.css',
-    'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
-  ],
+  style: {
+    app: 'src/style/**/*.css',
+    lib: [
+      'bower_components/semantic-ui/dist/semantic.css',
+      'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
+    ]
+  },
   build: {
     out: 'app.js',
     minified: 'app.min.js',
@@ -46,7 +48,7 @@ gulp.task('connect', function () {
 });
 
 gulp.task('html', function () {
-  var appPaths = [paths.build.root + '/css/**/*.css'];
+  var appPaths = [paths.build.src + '/style/**/*.css'];
   if (process.env.environment === 'production') {
     gutil.log(gutil.colors.yellow('Building in Production mode'));
     appPaths.push(paths.build.dist + '/' + paths.build.minified);
@@ -55,26 +57,26 @@ gulp.task('html', function () {
     appPaths.push(paths.build.src + '/' + paths.build.out);
   }
 
-  var libSources = gulp.src([paths.build.src + '/libs/**/*.js', paths.build.src + '/libs/**/*.css'], {read: false});
-  var appSources = gulp.src(appPaths, {read: false});
-
   return gulp.src(paths.html)
       .pipe(handleErrors(errorHandler))
-      .pipe(inject(series(libSources, appSources), {ignorePath: paths.build.root, addRootSlash: false}))
+      .pipe(inject(gulp.src(appPaths, {read: false}), {ignorePath: paths.build.root, addRootSlash: false}))
       .pipe(gulp.dest(paths.build.root))
       .pipe(connect.reload());
 });
 
 gulp.task('style', function () {
-  return gulp.src(paths.style, {base: './bower_components'})
+  var libSources = gulp.src(paths.style.lib, {base: './bower_components'});
+  var appSources = gulp.src(paths.style.app);
+
+  return series(libSources, appSources)
       .pipe(handleErrors(errorHandler))
-      .pipe(gulp.dest(paths.build.root + '/css'))
+      .pipe(gulp.dest(paths.build.src + '/style'))
       .pipe(connect.reload());
 });
 
 gulp.task('watch', ['style'], function () {
   gulp.watch(paths.html, ['html']);
-  gulp.watch(paths.style, ['style']);
+  gulp.watch(paths.style.app, ['style']);
 
   var watcher = watchify(browserify({
     entries: [paths.scripts.entry],
@@ -101,7 +103,7 @@ gulp.task('watch', ['style'], function () {
 });
 
 gulp.task('clean', function (cb) {
-  del([paths.build.dist + '/**/*'], cb);
+  del([paths.build.root + '/**/*'], cb);
 });
 
 gulp.task('build', ['clean'], function () {
@@ -115,7 +117,7 @@ gulp.task('build', ['clean'], function () {
       .pipe(gulp.dest(paths.build.dist));
 });
 
-gulp.task('default', function () {
+gulp.task('default', ['clean'], function () {
   process.env.environment = 'development';
   sequence('watch', 'html', 'connect');
 });
