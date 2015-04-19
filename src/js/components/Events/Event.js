@@ -1,3 +1,4 @@
+var moment = require('moment');
 var React = require('react/addons');
 var EventModal = require('./EventModal');
 
@@ -10,7 +11,7 @@ var Event = React.createClass({
     return (
         <a className="event item" onClick={this.openEvent}>
           <div className="header">{this.props.data.name}</div>
-          <span className="subtitle">{this.props.data.date.toDateString()}</span>
+          <span className="subtitle">{moment(this.props.data.date).format('dddd, MMMM Do YYYY')}</span>
         </a>
     );
   }

@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var moment = require('moment');
 var React = require('react/addons');
 var classNames = require('classnames');
 var AttendeeList = require('../Attendees/AttendeeList');
@@ -47,7 +48,7 @@ var EventModal = React.createClass({
             <div className="ui basic segment">
               <div className="ui top attached segment">
                 <h2 className="ui header">{this.props.event.name}
-                  <div className="sub header">{this.props.event.date.toDateString()}</div>
+                  <div className="sub header">{moment(this.props.event.date).format('dddd, MMMM Do YYYY')}</div>
                 </h2>
                 {registerLink}
                 <i className="remove circle icon" onClick={this.closeModal}></i>
