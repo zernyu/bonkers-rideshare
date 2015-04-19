@@ -34,6 +34,13 @@ var EventModal = React.createClass({
     var transportationToggle = classNames('ui button', {'positive active': transportationView});
     var housingToggle = classNames('ui button', {'positive active': !transportationView});
 
+    var registerLink = '';
+    if (this.props.event.registrationUrl) {
+      registerLink = <a className="registration"
+                        href={this.props.event.registrationUrl}
+                        target="_blank">Event registration <i className="small external icon"></i></a>;
+    }
+
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="event content">
@@ -42,6 +49,7 @@ var EventModal = React.createClass({
                 <h2 className="ui header">{this.props.event.name}
                   <div className="sub header">{this.props.event.date.toDateString()}</div>
                 </h2>
+                {registerLink}
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
               <div className="ui two fluid attached full width buttons">
@@ -54,8 +62,7 @@ var EventModal = React.createClass({
                             eventId={this.props.event.objectId}
                             transportationView={transportationView}/>
               <button className="ui fluid bottom attached positive full width button"
-                      onClick={this.editAttendee}>Join this event
-              </button>
+                      onClick={this.editAttendee}>Join this event</button>
             </div>
           </div>
         </div>

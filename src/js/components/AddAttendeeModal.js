@@ -5,6 +5,7 @@ var ParseReact = require('parse-react');
 var classNames = require('classnames');
 var DriverSelect = require('./DriverSelect');
 var HostSelect = require('./HostSelect');
+var validateField = require('../utils/validateField');
 
 var AddAttendeeModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ParseReact.Mixin],
@@ -46,70 +47,41 @@ var AddAttendeeModal = React.createClass({
     return attendee;
   },
 
-  addAttendee: function () {
-    var passed = _.every(this.refs, function (validationField, validationKey) {
-      return this.validateField(validationField, validationKey);
-    }, this);
+  saveAttendee: function () {
+    var passed = _.every(this.refs, validateField, this);
+    if (!passed) return;
 
-    if (passed) {
-      var driver = this.state.ridingWith ? this._getAttendee(this.state.ridingWith, 'drivers') : undefined;
-      var host = this.state.roomingWith ? this._getAttendee(this.state.roomingWith, 'hosts') : undefined;
+    var driver = this.state.ridingWith ? this._getAttendee(this.state.ridingWith, 'drivers') : undefined;
+    var host = this.state.roomingWith ? this._getAttendee(this.state.roomingWith, 'hosts') : undefined;
 
-      var attendee = {
-        eventId: this.props.eventId,
-        name: this.state.name,
-        notes: this.state.notes,
+    var attendee = {
+      eventId: this.props.eventId,
+      name: this.state.name,
+      notes: this.state.notes,
 
-        driving: this.state.driving,
-        carCapacity: this.state.driving ? parseInt(this.state.carCapacity) : undefined,
-        ridingWith: !this.state.driving ? driver : undefined,
+      driving: this.state.driving,
+      carCapacity: this.state.driving ? parseInt(this.state.carCapacity) : undefined,
+      ridingWith: !this.state.driving ? driver : undefined,
 
-        hosting: this.state.hosting,
-        hostingCapacity: this.state.hosting ? parseInt(this.state.hostingCapacity) : undefined,
-        roomingWith: !this.state.hosting ? host : undefined
-      };
+      hosting: this.state.hosting,
+      hostingCapacity: this.state.hosting ? parseInt(this.state.hostingCapacity) : undefined,
+      roomingWith: !this.state.hosting ? host : undefined
+    };
 
-      var save = this.props.attendee.objectId
-          ? ParseReact.Mutation.Set(this.props.attendee, attendee)
-          : ParseReact.Mutation.Create('Attendee', attendee);
-      save.dispatch();
+    var save = this.props.attendee.objectId
+        ? ParseReact.Mutation.Set(this.props.attendee, attendee)
+        : ParseReact.Mutation.Create('Attendee', attendee);
+    save.dispatch();
 
-      if (this.props.attendee.ridingWith && !driver) {
-        ParseReact.Mutation.Unset(this.props.attendee, 'ridingWith').dispatch();
-      }
-
-      if (this.props.attendee.roomingWith && !host) {
-        ParseReact.Mutation.Unset(this.props.attendee, 'roomingWith').dispatch();
-      }
-
-      this.closeModal();
-    }
-  },
-
-  validateField: function (field, validationKey) {
-    var validationError = undefined;
-
-    if (field.props.validate) {
-      var value = field.getDOMNode().value;
-      if (_.isEmpty(value)) {
-        validationError = 'You left this blank, doofus!';
-      } else if (field.props.validationType === 'integer' && _.isNaN(parseInt(value))) {
-        validationError = 'Enter a real number, doofus!';
-      }
+    if (this.props.attendee.ridingWith && !driver) {
+      ParseReact.Mutation.Unset(this.props.attendee, 'ridingWith').dispatch();
     }
 
-    // Reset validation error if validation passes and validation error is being displayed
-    if (validationError === undefined && this.state.validation[validationKey]) {
-      validationError = false;
+    if (this.props.attendee.roomingWith && !host) {
+      ParseReact.Mutation.Unset(this.props.attendee, 'roomingWith').dispatch();
     }
 
-    if (validationError !== undefined) {
-      var validationState = this.state.validation;
-      validationState[validationKey] = validationError;
-      this.setState({ validation: validationState });
-    }
-
-    return !validationError;
+    this.closeModal();
   },
 
   getInitialState: function () {
@@ -119,7 +91,7 @@ var AddAttendeeModal = React.createClass({
   },
 
   componentWillMount: function () {
-    var preloadState = this.props.attendee;
+    var preloadState = this.props.attendee || {};
 
     if (_.isObject(preloadState.ridingWith)) {
       preloadState.ridingWith = preloadState.ridingWith.objectId;
@@ -225,7 +197,7 @@ var AddAttendeeModal = React.createClass({
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
                   <button className="ui button" onClick={this.closeModal}>Cancel</button>
-                  <button className="ui right labeled positive icon button" onClick={this.addAttendee}>
+                  <button className="ui right labeled positive icon button" onClick={this.saveAttendee}>
                     {this.props.attendee.objectId ? 'Update' : 'Join'}
                     <i className="right chevron icon"></i>
                   </button>

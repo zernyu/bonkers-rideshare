@@ -1,16 +1,10 @@
+var _ = require('underscore');
 var React = require('react/addons');
+var ParseReact = require('parse-react');
 var moment = require('moment');
 var classNames = require('classnames');
 var DayPicker = require('react-day-picker');
-
-function valueToDate(s) {
-  var date = moment(s, "YYYY-MM-DD", true);
-  return date.isValid() ? date : null;
-}
-
-function dateToValue(d) {
-  return d.format("YYYY-MM-DD");
-}
+var validateField = require('../utils/validateField');
 
 function isSameDay(a, b) {
   return a.startOf('day').isSame(b.startOf('day'));
@@ -23,10 +17,26 @@ var AddEventModal = React.createClass({
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
-  handleDayTouchTap(day, modifiers, e) {
+  saveEvent: function () {
+    var passed = _.every(this.refs, validateField, this);
+    if (!passed) return;
+
+    var event = {
+      name: this.state.name,
+      date: this.state.date,
+      registrationUrl: this.state.registrationUrl
+    };
+
+    var save = ParseReact.Mutation.Create('Event', event);
+    save.dispatch();
+
+    this.closeModal();
+  },
+
+  selectDay: function (day, modifiers) {
     if (modifiers.indexOf('disabled') === -1) {
       this.setState({
-        date: dateToValue(day)
+        date: day.toDate()
       });
     }
   },
@@ -36,19 +46,21 @@ var AddEventModal = React.createClass({
       today: function (day) {
         return isSameDay(moment(), day);
       },
+
+      // disable past days
       disabled: function (day) {
-        // disable past days
         return day.diff(moment(), 'day') < 0;
       },
-      selected: function (day) {
-        const value = valueToDate(this.state.date);
 
-        if (modifiers.disabled(day) || !value) {
-          // value may be null if not a valid date
+      selected: function (day) {
+        var currentDate = moment(this.state.date);
+
+        if (modifiers.disabled(day) || !currentDate) {
+          // date may be null if not a valid date
           return false;
         }
         else {
-          return isSameDay(value, day);
+          return isSameDay(currentDate, day);
         }
       }.bind(this)
     };
@@ -57,14 +69,18 @@ var AddEventModal = React.createClass({
 
   getInitialState: function () {
     return {
-      date: dateToValue(moment()),
+      date: new Date(),
       validation: {}
     };
   },
 
+  componentWillMount: function () {
+    var preloadState = this.props.event || {};
+    this.setState(preloadState);
+  },
+
   render: function () {
     var nameValidation = classNames('ui pointing red label', {'hidden': !this.state.validation.name});
-    var value = this.state.date;
 
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
@@ -85,21 +101,31 @@ var AddEventModal = React.createClass({
                   <div className={nameValidation}>{this.state.validation.name}</div>
                 </div>
                 <div className="field">
+                  <label>Registration URL <span className="optional">Optional</span></label>
+                  <input type="text"
+                         placeholder="https://www.bikereg.com/123456"
+                         validate={false}
+                         valueLink={this.linkState('registrationUrl')}/>
+
+                  <div className={nameValidation}>{this.state.validation.name}</div>
+                </div>
+                <div className="field">
                   <label>Date</label>
                   <DayPicker
                       ref="daypicker"
                       enableOutsideDays={true}
-                      initialMonth={ valueToDate(value) || moment() }
+                      initialMonth={moment(this.state.date)}
                       numberOfMonths={1}
-                      modifiers={ this.getModifiers() }
-                      onDayTouchTap={this.handleDayTouchTap}/>
+                      modifiers={this.getModifiers()}
+                      onDayClick={this.selectDay}
+                      onDayTouchTap={this.selectDay}/>
                 </div>
               </div>
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
                   <button className="ui button" onClick={this.closeModal}>Cancel</button>
-                  <button className="ui right labeled positive icon button" onClick={this.addAttendee}>
-                    Add event
+                  <button className="ui right labeled positive icon button" onClick={this.saveEvent}>
+                    Save event
                     <i className="right chevron icon"></i>
                   </button>
                 </div>

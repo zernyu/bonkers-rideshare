@@ -1,0 +1,13 @@
+.attendee.content {
+  top: auto !important;
+  position: absolute !important;
+}
+
+.attendee .ui.form textarea {
+  resize: none;
+}
+
+.attendee .ui.form select {
+  height: 2.72em;
+}
+

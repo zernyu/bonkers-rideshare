@@ -1,0 +1,7 @@
+.form .hidden.field.group {
+  display: none;
+}
+
+.ui.form .field > .optional {
+  opacity: 0.8;
+}
