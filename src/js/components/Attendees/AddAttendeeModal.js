@@ -5,7 +5,7 @@ var ParseReact = require('parse-react');
 var classNames = require('classnames');
 var DriverSelect = require('./DriverSelect');
 var HostSelect = require('./HostSelect');
-var validateField = require('../utils/validateField');
+var validateField = require('../../utils/validateField');
 
 var AddAttendeeModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ParseReact.Mixin],

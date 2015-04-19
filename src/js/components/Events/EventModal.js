@@ -1,8 +1,8 @@
 var _ = require('underscore');
 var React = require('react/addons');
 var classNames = require('classnames');
-var AttendeeList = require('./AttendeeList');
-var AddAttendeeModal = require('./AddAttendeeModal');
+var AttendeeList = require('../Attendees/AttendeeList');
+var AddAttendeeModal = require('../Attendees/AddAttendeeModal');
 
 var EventModal = React.createClass({
   closeModal: function () {

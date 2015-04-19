@@ -4,7 +4,7 @@ var ParseReact = require('parse-react');
 var moment = require('moment');
 var classNames = require('classnames');
 var DayPicker = require('react-day-picker');
-var validateField = require('../utils/validateField');
+var validateField = require('../../utils/validateField');
 
 function isSameDay(a, b) {
   return a.startOf('day').isSame(b.startOf('day'));
