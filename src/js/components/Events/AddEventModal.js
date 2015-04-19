@@ -37,7 +37,9 @@ var AddEventModal = React.createClass({
       housingNeeded: this.state.housingNeeded
     };
 
-    var save = ParseReact.Mutation.Create('Event', event);
+    var save = this.props.event.objectId
+        ? ParseReact.Mutation.Set(this.props.event, event)
+        : ParseReact.Mutation.Create('Event', event);
     save.dispatch();
 
     this.closeModal();

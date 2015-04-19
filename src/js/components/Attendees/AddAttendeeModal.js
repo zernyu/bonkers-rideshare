@@ -3,9 +3,10 @@ var React = require('react/addons');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 var classNames = require('classnames');
+var validateField = require('../../utils/validateField');
+var If = require('../If');
 var DriverSelect = require('./DriverSelect');
 var HostSelect = require('./HostSelect');
-var validateField = require('../../utils/validateField');
 
 var AddAttendeeModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ParseReact.Mixin],
@@ -163,32 +164,34 @@ var AddAttendeeModal = React.createClass({
                     <DriverSelect options={this.data.drivers} valueLink={this.linkState('ridingWith')} />
                   </div>
                 </div>
-                <div className="field">
-                  <div className="ui two fluid buttons">
-                    <div className={hostingToggle} onClick={this.hosting.bind(this, true)}>
-                      <i className="home icon"></i> Hosting</div>
-                    <div className={roomingToggle} onClick={this.hosting.bind(this, false)}>
-                      <i className="trash icon"></i> Bumming</div>
-                  </div>
-                </div>
-                <div className={hostingForm}>
+                <If test={this.props.housingNeeded}><wrapper>
                   <div className="field">
-                    <label>Housing capacity</label>
-                    <input type="tel"
-                           placeholder="Number of people (including yourself) who can stay with you"
-                           ref="hostingCapacity"
-                           validate={this.state.hosting}
-                           validationType="integer"
-                           valueLink={this.linkState('hostingCapacity')} />
-                    <div className={hostingCapacityValidation}>{this.state.validation.hostingCapacity}</div>
+                    <div className="ui two fluid buttons">
+                      <div className={hostingToggle} onClick={this.hosting.bind(this, true)}>
+                        <i className="home icon"></i> Hosting</div>
+                      <div className={roomingToggle} onClick={this.hosting.bind(this, false)}>
+                        <i className="trash icon"></i> Bumming</div>
+                    </div>
                   </div>
-                </div>
-                <div className={roomingForm}>
-                  <div className="field">
-                    <label>Rooming with</label>
-                    <HostSelect options={this.data.hosts} valueLink={this.linkState('roomingWith')} />
+                  <div className={hostingForm}>
+                    <div className="field">
+                      <label>Housing capacity</label>
+                      <input type="tel"
+                             placeholder="Number of people (including yourself) who can stay with you"
+                             ref="hostingCapacity"
+                             validate={this.state.hosting}
+                             validationType="integer"
+                             valueLink={this.linkState('hostingCapacity')} />
+                      <div className={hostingCapacityValidation}>{this.state.validation.hostingCapacity}</div>
+                    </div>
                   </div>
-                </div>
+                  <div className={roomingForm}>
+                    <div className="field">
+                      <label>Rooming with</label>
+                      <HostSelect options={this.data.hosts} valueLink={this.linkState('roomingWith')} />
+                    </div>
+                  </div>
+                </wrapper></If>
                 <div className="field">
                   <label>Notes</label>
                   <textarea placeholder="Leaving from Star Lounge at 8am, bringing a teddy bear" valueLink={this.linkState('notes')}></textarea>
