@@ -17,6 +17,15 @@ var AddEventModal = React.createClass({
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
+  handleCheckbox: function (checkbox) {
+    var checkboxNode = this.refs[checkbox].getDOMNode();
+    checkboxNode.checked = !checkboxNode.checked;
+
+    var checkState = {};
+    checkState[checkbox] = checkboxNode.checked;
+    this.setState(checkState);
+  },
+
   saveEvent: function () {
     var passed = _.every(this.refs, validateField, this);
     if (!passed) return;
@@ -24,7 +33,8 @@ var AddEventModal = React.createClass({
     var event = {
       name: this.state.name,
       date: this.state.date,
-      registrationUrl: this.state.registrationUrl
+      registrationUrl: this.state.registrationUrl,
+      housingNeeded: this.state.housingNeeded
     };
 
     var save = ParseReact.Mutation.Create('Event', event);
@@ -104,21 +114,29 @@ var AddEventModal = React.createClass({
                   <label>Registration URL <span className="optional">Optional</span></label>
                   <input type="text"
                          placeholder="https://www.bikereg.com/123456"
-                         validate={false}
                          valueLink={this.linkState('registrationUrl')}/>
 
                   <div className={nameValidation}>{this.state.validation.name}</div>
                 </div>
                 <div className="field">
+                  <div className="ui checkbox">
+                    <input type="checkbox"
+                           ref="housingNeeded"
+                           checkedLink={this.linkState('housingNeeded')}/>
+                    <label onClick={this.handleCheckbox.bind(this, 'housingNeeded')}>
+                      Overnight stay <span className="optional">Do we need housing?</span>
+                    </label>
+                  </div>
+                </div>
+                <div className="field">
                   <label>Date</label>
-                  <DayPicker
-                      ref="daypicker"
-                      enableOutsideDays={true}
-                      initialMonth={moment(this.state.date)}
-                      numberOfMonths={1}
-                      modifiers={this.getModifiers()}
-                      onDayClick={this.selectDay}
-                      onDayTouchTap={this.selectDay}/>
+                  <DayPicker ref="daypicker"
+                             enableOutsideDays={true}
+                             initialMonth={moment(this.state.date)}
+                             numberOfMonths={1}
+                             modifiers={this.getModifiers()}
+                             onDayClick={this.selectDay}
+                             onDayTouchTap={this.selectDay}/>
                 </div>
               </div>
               <div className="ui bottom attached segment">

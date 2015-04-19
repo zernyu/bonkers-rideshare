@@ -2,6 +2,6 @@
   display: none;
 }
 
-.ui.form .field > .optional {
-  opacity: 0.8;
+.ui.form .field .optional {
+  opacity: 0.5;
 }
