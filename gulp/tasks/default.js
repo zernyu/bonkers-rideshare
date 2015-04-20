@@ -99,6 +99,7 @@ gulp.task('style', function () {
     var styleStream = series(libSources, appSources)
         .pipe(handleErrors(errorHandler))
         .pipe(minifyCSS())
+        .on('error', errorHandler)
         .pipe(concat(paths.build.style.production))
         .pipe(gulp.dest(paths.build.production));
 
@@ -126,6 +127,7 @@ gulp.task('watch', ['style'], function () {
         var updateStart = Date.now();
         gutil.log(gutil.colors.green('Sources updated. Rebundling javascript') + '...');
         watcher.bundle()
+            .on('error', errorHandler)
             .pipe(source(paths.build.script.development))
             .pipe(streamify(substituter(config.parse)))
             .pipe(gulp.dest(paths.build.development))
@@ -133,6 +135,7 @@ gulp.task('watch', ['style'], function () {
         gutil.log(gutil.colors.green('Complete!'), 'after', gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
       })
       .bundle()
+      .on('error', errorHandler)
       .pipe(source(paths.build.script.development))
       .pipe(streamify(substituter(config.parse)))
       .pipe(gulp.dest(paths.build.development));
@@ -150,6 +153,7 @@ gulp.task('compileScripts', function () {
     transform: [reactify, uglifyify]
   })
       .bundle()
+      .on('error', errorHandler)
       .pipe(source(paths.build.script.production))
       .pipe(streamify(substituter(config.parse)))
       .pipe(gulp.dest(paths.build.production));
