@@ -53,7 +53,7 @@ var AddEventModal = React.createClass({
     }
   },
 
-  getModifiers() {
+  getModifiers: function () {
     var modifiers = {
       today: function (day) {
         return isSameDay(moment(), day);
