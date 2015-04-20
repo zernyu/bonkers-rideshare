@@ -4,7 +4,7 @@ var EventList = require('./EventList');
 
 var Events = React.createClass({
   addEvent: function () {
-    React.render(<AddEventModal />, document.getElementById('eventModal'));
+    React.render(<AddEventModal event={{}} />, document.getElementById('eventModal'));
   },
 
   render: function () {

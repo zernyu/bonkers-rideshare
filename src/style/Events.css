@@ -43,7 +43,7 @@
 
 .event.item .setting {
   /*margin-top: 0.25em !important;*/
-  opacity: 0;
+  opacity: 0.3;
   width: 50px;
   line-height: 1.5em;
   -webkit-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;

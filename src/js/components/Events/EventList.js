@@ -8,7 +8,7 @@ var EventList = React.createClass({
 
   observe: function () {
     return {
-      events: (new Parse.Query('Event')).descending('createdAt')
+      events: (new Parse.Query('Event')).descending('date')
     };
   },
 
