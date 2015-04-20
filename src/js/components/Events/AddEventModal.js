@@ -117,8 +117,6 @@ var AddEventModal = React.createClass({
                   <input type="text"
                          placeholder="https://www.bikereg.com/123456"
                          valueLink={this.linkState('registrationUrl')}/>
-
-                  <div className={nameValidation}>{this.state.validation.name}</div>
                 </div>
                 <div className="field">
                   <div className="ui checkbox">

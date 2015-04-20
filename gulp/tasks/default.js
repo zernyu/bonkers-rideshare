@@ -3,11 +3,13 @@ var gutil = require('gulp-util');
 var series = require('stream-series');
 var inject = require('gulp-inject');
 var sequence = require('run-sequence');
+var concat = require('gulp-concat');
 var connect = require('gulp-connect');
 var del = require('del');
 var handleErrors = require('gulp-plumber');
 var errorHandler = require('../util/handleErrors');
 var substituter = require('gulp-substituter');
+var flags = require('minimist')(process.argv.slice(2));
 
 // JS build tools
 var source = require('vinyl-source-stream');
@@ -16,6 +18,8 @@ var reactify = require('reactify');
 var uglifyify = require('uglifyify');
 var watchify = require('watchify');
 var streamify = require('gulp-streamify');
+
+var minifyCSS = require('gulp-minify-css');
 
 var config = require('../config');
 
@@ -32,46 +36,78 @@ var paths = {
     ]
   },
   build: {
-    out: 'app.js',
-    minified: 'app.min.js',
-    root: 'dist',
-    dist: 'dist/build',
-    src: 'dist/src'
+    script: {
+      development: 'app.js',
+      production: 'app.min.js'
+    },
+    style: {
+      production: 'app.min.css'
+    },
+    development: 'dist/src',
+    production: 'dist/build'
   }
 };
 
 gulp.task('connect', function () {
   connect.server({
-    root: paths.build.root,
+    root: paths.build[process.env.environment],
     livereload: true
   });
 });
 
 gulp.task('html', function () {
-  var appPaths = [paths.build.src + '/style/**/*.css'];
+  var appPaths;
   if (process.env.environment === 'production') {
     gutil.log(gutil.colors.yellow('Building in Production mode'));
-    appPaths.push(paths.build.dist + '/' + paths.build.minified);
+    appPaths = [
+      paths.build.production + '/' + paths.build.script.production,
+      paths.build.production + '/**/*.css'
+    ]
   } else {
     gutil.log(gutil.colors.yellow('Building in Development mode'));
-    appPaths.push(paths.build.src + '/' + paths.build.out);
+    appPaths = [
+      paths.build.development + '/' + paths.build.script.development,
+      paths.build.development + '/style/**/*.css'
+    ]
   }
 
   return gulp.src(paths.html)
       .pipe(handleErrors(errorHandler))
-      .pipe(inject(gulp.src(appPaths, {read: false}), {ignorePath: paths.build.root, addRootSlash: false}))
-      .pipe(gulp.dest(paths.build.root))
+      .pipe(inject(gulp.src(appPaths, {read: false}), {
+        ignorePath: paths.build[process.env.environment],
+        addRootSlash: false
+      }))
+      .pipe(gulp.dest(paths.build[process.env.environment]))
       .pipe(connect.reload());
 });
 
 gulp.task('style', function () {
-  var libSources = gulp.src(paths.style.lib, {base: './bower_components'});
-  var appSources = gulp.src(paths.style.app);
+  var libSources, appSources;
 
-  return series(libSources, appSources)
-      .pipe(handleErrors(errorHandler))
-      .pipe(gulp.dest(paths.build.src + '/style'))
-      .pipe(connect.reload());
+  if (process.env.environment === 'development') {
+    libSources = gulp.src(paths.style.lib, {base: './bower_components'});
+    appSources = gulp.src(paths.style.app);
+
+    return series(libSources, appSources)
+        .pipe(handleErrors(errorHandler))
+        .pipe(gulp.dest(paths.build.development + '/style'))
+        .pipe(connect.reload());
+  } else if (process.env.environment === 'production') {
+    libSources = gulp.src(paths.style.lib[0]);
+    appSources = gulp.src(paths.style.app);
+
+    var styleStream = series(libSources, appSources)
+        .pipe(handleErrors(errorHandler))
+        .pipe(minifyCSS())
+        .pipe(concat(paths.build.style.production))
+        .pipe(gulp.dest(paths.build.production));
+
+    var fontStream = gulp.src(paths.style.lib[1], {base: './bower_components/semantic-ui/dist'})
+        .pipe(handleErrors(errorHandler))
+        .pipe(gulp.dest(paths.build.production));
+
+    return series(styleStream, fontStream);
+  }
 });
 
 gulp.task('watch', ['style'], function () {
@@ -90,39 +126,41 @@ gulp.task('watch', ['style'], function () {
         var updateStart = Date.now();
         gutil.log(gutil.colors.green('Sources updated. Rebundling javascript') + '...');
         watcher.bundle()
-            .pipe(source(paths.build.out))
+            .pipe(source(paths.build.script.development))
             .pipe(streamify(substituter(config.parse)))
-            .pipe(gulp.dest(paths.build.src))
+            .pipe(gulp.dest(paths.build.development))
             .pipe(connect.reload());
         gutil.log(gutil.colors.green('Complete!'), 'after', gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
       })
       .bundle()
-      .pipe(source(paths.build.out))
+      .pipe(source(paths.build.script.development))
       .pipe(streamify(substituter(config.parse)))
-      .pipe(gulp.dest(paths.build.src));
+      .pipe(gulp.dest(paths.build.development));
 });
 
 gulp.task('clean', function (cb) {
-  del([paths.build.root + '/**/*'], cb);
+  var environment = flags.production ? 'production' : 'development';
+  gutil.log(gutil.colors.green('Cleaning', environment, 'directory'));
+  del([paths.build[environment] + '/**/*'], cb);
 });
 
-gulp.task('build', ['clean'], function () {
+gulp.task('compileScripts', function () {
   return browserify({
     entries: [paths.scripts.entry],
     transform: [reactify, uglifyify]
   })
       .bundle()
-      .pipe(source(paths.build.minified))
+      .pipe(source(paths.build.script.production))
       .pipe(streamify(substituter(config.parse)))
-      .pipe(gulp.dest(paths.build.dist));
+      .pipe(gulp.dest(paths.build.production));
 });
 
-gulp.task('default', ['clean'], function () {
+gulp.task('default', function () {
   process.env.environment = 'development';
   sequence('watch', 'html', 'connect');
 });
 
-gulp.task('production', function () {
+gulp.task('build', function () {
   process.env.environment = 'production';
-  sequence('build', 'html');
+  sequence('compileScripts', 'style', 'html');
 });
