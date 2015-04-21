@@ -1,6 +1,6 @@
 {
-  "name": "native",
-  "app_id": "",
+  "name": "Ride Share",
+  "app_id": "6cdec1bf",
   "gulpStartupTasks": [
     "sass",
     "watch"
