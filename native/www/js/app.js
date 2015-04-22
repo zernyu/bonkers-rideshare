@@ -1,5 +1,7 @@
 angular.module('rideshare', [
   'ionic',
+  'parse-angular', 'parse-angular.enhance',
+  'rideshare.common.models',
   'rideshare.controllers',
   'rideshare.events.controllers'
 ])
@@ -29,50 +31,58 @@ angular.module('rideshare', [
     .config(function ($stateProvider, $urlRouterProvider) {
       $stateProvider
           .state('app', {
-            url: "/app",
+            url: '/app',
             abstract: true,
-            templateUrl: "js/common/html/main.html",
+            templateUrl: 'js/common/html/main.html',
             controller: 'AppController'
           })
           .state('app.events', {
-            url: "/events",
+            url: '/events',
             views: {
               'content': {
-                templateUrl: "js/events/html/events.html",
-                controller: 'EventsController'
+                templateUrl: 'js/events/html/events.html',
+                controller: 'EventsController',
+                resolve: {
+                  events: function () {
+                    // get the collection from our data definitions
+                    var events = new (Parse.Collection.getClass('Event'));
+                    // use the extended Parse SDK to load the whole collection
+                    return events.fetch();
+                  }
+                }
               }
             }
           })
           .state('app.search', {
-            url: "/search",
+            url: '/search',
             views: {
               'content': {
-                templateUrl: "templates/search.html"
+                templateUrl: 'templates/search.html'
               }
             }
           })
           .state('app.browse', {
-            url: "/browse",
+            url: '/browse',
             views: {
               'content': {
-                templateUrl: "templates/browse.html"
+                templateUrl: 'templates/browse.html'
               }
             }
           })
           .state('app.playlists', {
-            url: "/playlists",
+            url: '/playlists',
             views: {
               'content': {
-                templateUrl: "templates/playlists.html",
+                templateUrl: 'templates/playlists.html',
                 controller: 'PlaylistsController'
               }
             }
           })
           .state('app.single', {
-            url: "/playlists/:playlistId",
+            url: '/playlists/:playlistId',
             views: {
               'content': {
-                templateUrl: "templates/playlist.html",
+                templateUrl: 'templates/playlist.html',
                 controller: 'PlaylistController'
               }
             }
