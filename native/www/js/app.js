@@ -31,14 +31,14 @@ angular.module('rideshare', [
           .state('app', {
             url: "/app",
             abstract: true,
-            templateUrl: "templates/menu.html",
+            templateUrl: "js/common/html/main.html",
             controller: 'AppController'
           })
           .state('app.events', {
             url: "/events",
             views: {
-              'menuContent': {
-                templateUrl: "templates/events.html",
+              'content': {
+                templateUrl: "js/events/html/events.html",
                 controller: 'EventsController'
               }
             }
@@ -46,7 +46,7 @@ angular.module('rideshare', [
           .state('app.search', {
             url: "/search",
             views: {
-              'menuContent': {
+              'content': {
                 templateUrl: "templates/search.html"
               }
             }
@@ -54,7 +54,7 @@ angular.module('rideshare', [
           .state('app.browse', {
             url: "/browse",
             views: {
-              'menuContent': {
+              'content': {
                 templateUrl: "templates/browse.html"
               }
             }
@@ -62,7 +62,7 @@ angular.module('rideshare', [
           .state('app.playlists', {
             url: "/playlists",
             views: {
-              'menuContent': {
+              'content': {
                 templateUrl: "templates/playlists.html",
                 controller: 'PlaylistsController'
               }
@@ -71,7 +71,7 @@ angular.module('rideshare', [
           .state('app.single', {
             url: "/playlists/:playlistId",
             views: {
-              'menuContent': {
+              'content': {
                 templateUrl: "templates/playlist.html",
                 controller: 'PlaylistController'
               }

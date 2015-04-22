@@ -33,18 +33,20 @@ gulp.task('sass', function (done) {
       .on('end', done);
 });
 
-gulp.task('html', function () {
-  return gulp.src(paths.html)
+gulp.task('html', function (done) {
+  gulp.src(paths.html)
       .pipe(inject(gulp.src(paths.js, {read: false}), {
         relative: true
       }))
       .pipe(substitute(config.parse))
       .pipe(rename('index.html'))
       .pipe(gulp.dest('www/'))
+      .on('end', done);
 });
 
 gulp.task('watch', function () {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch([paths.html, paths.js], ['html']);
 });
 
 gulp.task('install', ['git-check'], function () {
