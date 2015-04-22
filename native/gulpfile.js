@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var bower = require('bower');
 var inject = require('gulp-inject');
+var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
@@ -9,9 +10,9 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 
 var paths = {
-  html: './www/app.html',
-  js: './www/js/**/*.js',
-  sass: ['./scss/**/*.scss']
+  html: 'www/app.html',
+  js: 'www/js/**/*.js',
+  sass: ['scss/**/*.scss']
 };
 
 gulp.task('default', ['sass', 'html']);
@@ -30,11 +31,13 @@ gulp.task('sass', function (done) {
       .on('end', done);
 });
 
-gulp.task('html', function (done) {
+gulp.task('html', function () {
   return gulp.src(paths.html)
-      .pipe(inject(gulp.src(paths.js), {read: false}))
-      .pipe(gulp.dest('./www/index.html'))
-      .on('end', done);
+      .pipe(inject(gulp.src(paths.js, {read: false}), {
+        relative: true
+      }))
+      .pipe(rename('index.html'))
+      .pipe(gulp.dest('www/'))
 });
 
 gulp.task('watch', function () {
