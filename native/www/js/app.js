@@ -1,5 +1,4 @@
 angular.module('rideshare', ['ionic', 'rideshare.controllers'])
-
     .run(function ($ionicPlatform) {
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -13,7 +12,6 @@ angular.module('rideshare', ['ionic', 'rideshare.controllers'])
         }
       });
     })
-
     .config(function ($stateProvider, $urlRouterProvider) {
       $stateProvider
           .state('app', {
@@ -21,6 +19,15 @@ angular.module('rideshare', ['ionic', 'rideshare.controllers'])
             abstract: true,
             templateUrl: "templates/menu.html",
             controller: 'AppController'
+          })
+          .state('app.events', {
+            url: "/events",
+            views: {
+              'menuContent': {
+                templateUrl: "templates/events.html",
+                controller: 'EventsController'
+              }
+            }
           })
           .state('app.search', {
             url: "/search",
@@ -58,5 +65,5 @@ angular.module('rideshare', ['ionic', 'rideshare.controllers'])
           });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/app/playlists');
+      $urlRouterProvider.otherwise('/app/events');
     });

@@ -1,5 +1,4 @@
 angular.module('rideshare.controllers', [])
-
     .controller('AppController', function ($scope, $ionicModal, $timeout) {
       // Form data for the login modal
       $scope.loginData = {};
@@ -32,7 +31,11 @@ angular.module('rideshare.controllers', [])
         }, 1000);
       };
     })
-
+    .controller('EventsController', function ($scope) {
+      $scope.events = [
+        {name: 'Hillsboro-Roubaix', date: new Date()}
+      ]
+    })
     .controller('PlaylistsController', function ($scope) {
       $scope.playlists = [
         {title: 'Reggae', id: 1},
@@ -43,6 +46,5 @@ angular.module('rideshare.controllers', [])
         {title: 'Cowbell', id: 6}
       ];
     })
-
     .controller('PlaylistController', function ($scope, $stateParams) {
     });
