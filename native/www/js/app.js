@@ -1,4 +1,8 @@
-angular.module('rideshare', ['ionic', 'rideshare.controllers'])
+angular.module('rideshare', [
+  'ionic',
+  'rideshare.controllers',
+  'rideshare.events.controllers'
+])
     .run(function ($ionicPlatform) {
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

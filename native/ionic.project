@@ -1,8 +1,9 @@
 {
-  "name": "Ride Share",
+  "name": "RideShare",
   "app_id": "6cdec1bf",
   "gulpStartupTasks": [
     "sass",
+    "html",
     "watch"
   ],
   "watchPatterns": [

@@ -31,11 +31,6 @@ angular.module('rideshare.controllers', [])
         }, 1000);
       };
     })
-    .controller('EventsController', function ($scope) {
-      $scope.events = [
-        {name: 'Hillsboro-Roubaix', date: new Date()}
-      ]
-    })
     .controller('PlaylistsController', function ($scope) {
       $scope.playlists = [
         {title: 'Reggae', id: 1},
