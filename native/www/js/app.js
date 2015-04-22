@@ -3,7 +3,7 @@ angular.module('rideshare', [
   'rideshare.controllers',
   'rideshare.events.controllers'
 ])
-    .run(function ($ionicPlatform) {
+    .run(function ($state, $rootScope, $ionicPlatform) {
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -15,6 +15,16 @@ angular.module('rideshare', [
           StatusBar.styleDefault();
         }
       });
+
+      var currentUser = Parse.User.current();
+      $rootScope.user = null;
+      $rootScope.isLoggedIn = false;
+
+      if (currentUser) {
+        $rootScope.user = currentUser;
+        $rootScope.isLoggedIn = true;
+        $state.go('app');
+      }
     })
     .config(function ($stateProvider, $urlRouterProvider) {
       $stateProvider

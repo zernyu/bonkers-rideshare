@@ -8,6 +8,7 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var config = require('www/config');
 
 var paths = {
   html: 'www/app.html',

@@ -1,0 +1,6 @@
+{
+  "parse": {
+    "applicationId": "your application key",
+    "javascriptId": "your javascript key"
+  }
+}

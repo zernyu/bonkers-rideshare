@@ -10,6 +10,10 @@
 
   <!-- ionic/angularjs js -->
   <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <script src="lib/parse/parse.min.js"></script>
+  <script type="application/javascript">
+    Parse.initialize("<!-- substitute:applicationId -->", "<!-- substitute:javascriptId -->");
+  </script>
 
   <!-- cordova script (this will be a 404 during development) -->
   <script src="cordova.js"></script>
