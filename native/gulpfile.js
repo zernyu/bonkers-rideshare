@@ -7,8 +7,9 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
+var substitute = require('gulp-substituter');
 var sh = require('shelljs');
-var config = require('www/config');
+var config = require('./www/config');
 
 var paths = {
   html: 'www/app.html',
@@ -37,6 +38,7 @@ gulp.task('html', function () {
       .pipe(inject(gulp.src(paths.js, {read: false}), {
         relative: true
       }))
+      .pipe(substitute(config.parse))
       .pipe(rename('index.html'))
       .pipe(gulp.dest('www/'))
 });
