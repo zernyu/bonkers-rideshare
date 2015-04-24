@@ -1,3 +1,5 @@
+// TODO: check this out for ideas: https://github.com/alevicki/ionic-parse-starter/blob/master/www/js/controllers.js
+// TODO: facebook-angular? http://brandid.github.io/parse-angular-demo/#/features/facebookSDK
 angular.module('rideshare', [
   'ionic',
   'parse-angular', 'parse-angular.enhance',

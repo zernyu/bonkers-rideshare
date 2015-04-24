@@ -1,3 +1,6 @@
+/*
+ * Docs: https://github.com/brandid/parse-angular-patch
+ */
 angular.module('rideshare.common.models', [])
     .run(function () {
       var Event = Parse.Object.extend({
