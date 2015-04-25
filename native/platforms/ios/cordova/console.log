@@ -1,0 +1,14 @@
+2015-04-24 19:08:24.418 RideShare[60000:1718067] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/swiftdemise/Library/Developer/CoreSimulator/Devices/2C300667-E0C9-43D5-8C14-379BFBE3D9D0/data/Containers/Data/Application/73DB240C-0D4E-4F9B-89A5-3D34D34DA39F/Library/Cookies/Cookies.binarycookies
+2015-04-24 19:08:25.093 RideShare[60000:1718067] Apache Cordova native platform version 3.8.0 is starting.
+2015-04-24 19:08:25.094 RideShare[60000:1718067] Multi-tasking -> Device: YES, App: YES
+2015-04-24 19:08:25.111 RideShare[60000:1718067] Unlimited access to network resources
+2015-04-24 19:08:25.126 RideShare[60000:1718067] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+To disable web storage backup to iCloud, set the BackupWebStorage preference to "local" in the Cordova config.xml file
+
+2015-04-24 19:08:26.738 RideShare[60000:1718067] Resetting plugins due to page load.
+2015-04-24 19:08:26.898 RideShare[60000:1718067] Finished load of: file:///Users/swiftdemise/Library/Developer/CoreSimulator/Devices/2C300667-E0C9-43D5-8C14-379BFBE3D9D0/data/Containers/Bundle/Application/9767ECB2-4E3B-49BA-B24C-EF56C324EE82/RideShare.app/www/index.html

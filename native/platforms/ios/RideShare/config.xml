@@ -14,8 +14,13 @@
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="ios-package" value="CDVSplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
+    <splash height="480" src="res/splashscreen.png" width="320" />
     <name>RideShare</name>
     <description>
         Get organized! Get a ride! Fish sticks.
@@ -31,4 +36,5 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <icon src="res/icon.png" />
 </widget>
