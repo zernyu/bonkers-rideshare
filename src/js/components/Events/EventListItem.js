@@ -3,7 +3,7 @@ var React = require('react/addons');
 var AddEventModal = require('./AddEventModal');
 var EventModal = require('./EventModal');
 
-var Event = React.createClass({
+var EventListItem = React.createClass({
   openEvent: function () {
     React.render(<EventModal event={this.props.data} />, document.getElementById('eventModal'));
   },
@@ -26,4 +26,4 @@ var Event = React.createClass({
   }
 });
 
-module.exports = Event;
+module.exports = EventListItem;

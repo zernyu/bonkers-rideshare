@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
-var Event = require('./Event');
+var EventListItem = require('./EventListItem');
 var classNames = require('classnames');
 
 var EventList = React.createClass({
@@ -19,7 +19,7 @@ var EventList = React.createClass({
     return (
         <div className={classNames('ui large event selection list', {edit: editEnabled})}>
           {this.data.events.map(function (event) {
-            return <Event key={event.objectId} data={event} editEnabled={editEnabled}/>;
+            return <EventListItem key={event.objectId} data={event} editEnabled={editEnabled}/>;
           })}
         </div>
     );

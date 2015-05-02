@@ -27,7 +27,7 @@ var Events = React.createClass({
               <div className="center aligned column">
                 <h1 className="ui basic segment centered header">
                   Catch a ride!
-                  <div className="sub header">with some pretty sweet people</div>
+                  <div className="sub header">with some pretty sweet folks</div>
                 </h1>
               </div>
             </div>
