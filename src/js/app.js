@@ -6,5 +6,5 @@ Parse.initialize(
     "<!-- substitute:javascriptId -->"
 );
 
-var Events = require('./components/Events/Events');
+var Events = require('./modules/Events/Events');
 React.render(<Events />, document.getElementById('app'));
