@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "classnames": "^1.2.0",
+    "fastclick": "^1.0.6",
     "moment": "^2.10.2",
     "parse": "^1.4.2",
     "parse-react": "^0.1.4",

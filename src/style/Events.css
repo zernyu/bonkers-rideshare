@@ -49,8 +49,8 @@
   opacity: 0;
   width: 50px;
   line-height: 1.5em;
-  -webkit-transition: opacity 0.1s ease !important;
-  transition: opacity 0.1s ease !important;
+  -webkit-transition: opacity 0.3s ease !important;
+  transition: opacity 0.3s ease !important;
 }
 
 .edit .event.item .setting {

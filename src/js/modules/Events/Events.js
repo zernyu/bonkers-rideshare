@@ -20,6 +20,7 @@ var Events = React.createClass({
 
   render: function () {
     var editButtonClasses = classNames('ui right floated icon button', {blue: this.state.editEnabled});
+
     return (
         <div>
           <div className="ui page grid">
@@ -32,7 +33,7 @@ var Events = React.createClass({
               </div>
             </div>
 
-            <div className="fixed nav row">
+            <div className="row">
               <div className="column">
                 <button className={editButtonClasses} onClick={this.toggleEditMode}>
                   <i className="setting icon"></i>
