@@ -9,6 +9,7 @@ var del = require('del');
 var handleErrors = require('gulp-plumber');
 var errorHandler = require('../util/handleErrors');
 var substituter = require('gulp-substituter');
+var shell = require('gulp-shell');
 var flags = require('minimist')(process.argv.slice(2));
 
 // JS build tools
@@ -44,7 +45,8 @@ var paths = {
       production: 'app.min.css'
     },
     development: 'dist/src',
-    production: 'dist/build'
+    production: 'dist/build',
+    native: 'native/www'
   }
 };
 
@@ -167,4 +169,16 @@ gulp.task('default', function () {
 gulp.task('build', function () {
   process.env.environment = 'production';
   sequence('compileScripts', 'style', 'html');
+});
+
+gulp.task('native', function () {
+  var appPaths = [
+    paths.build.production + '/' + paths.build.script.production,
+    paths.build.production + '/' + paths.build.style.production
+  ];
+
+  return gulp.src(appPaths)
+      .pipe(handleErrors(errorHandler))
+      .pipe(gulp.dest(paths.build.native))
+      .pipe(shell('cordova build ios --device', {cwd: 'native'}));
 });
