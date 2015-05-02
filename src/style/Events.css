@@ -41,6 +41,10 @@
   opacity: 1;
 }
 
+.past.event.item {
+  opacity: 0.5;
+}
+
 .event.item .setting {
   opacity: 0;
   width: 50px;

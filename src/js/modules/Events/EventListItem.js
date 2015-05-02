@@ -2,6 +2,7 @@ var moment = require('moment');
 var React = require('react/addons');
 var AddEventModal = require('./AddEventModal');
 var EventModal = require('./EventModal');
+var classNames = require('classnames');
 
 var EventListItem = React.createClass({
   openEvent: function () {
@@ -16,11 +17,12 @@ var EventListItem = React.createClass({
   },
 
   render: function () {
+    var eventDate = moment(this.props.data.date);
     return (
-        <a className="event item" onClick={this.openEvent}>
+        <a className={classNames('event item', {past: eventDate.isBefore()})} onClick={this.openEvent}>
           <i className="right floated large setting icon" onClick={this.editEvent}></i>
           <div className="header">{this.props.data.name}</div>
-          <span className="subtitle">{moment(this.props.data.date).format('dddd, MMMM Do YYYY')}</span>
+          <span className="subtitle">{eventDate.format('dddd, MMMM Do YYYY')}</span>
         </a>
     );
   }
