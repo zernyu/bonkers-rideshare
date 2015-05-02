@@ -1,3 +1,6 @@
+/*
+  TODO: use modernizr for mobile styling detection?
+*/
 .scrollable {
   overflow-y: auto;
 }
