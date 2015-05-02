@@ -1,5 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bonkers.rideshare" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.bonkers.rideshare" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"
+        version="0.1.1"
+        android-versionCode="1505022310"
+        ios-CFBundleVersion="1505022310">
     <name>RideShare</name>
     <description>
         Get organized! Get a ride! Fish sticks.
