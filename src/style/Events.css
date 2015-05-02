@@ -42,18 +42,21 @@
 }
 
 .event.item .setting {
-  /*margin-top: 0.25em !important;*/
-  opacity: 0.3;
+  opacity: 0;
   width: 50px;
   line-height: 1.5em;
-  -webkit-transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
-  transition: opacity 0.1s ease, background-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  -webkit-transition: opacity 0.1s ease !important;
+  transition: opacity 0.1s ease !important;
 }
 
-.event.item:hover .setting {
+.edit .event.item .setting {
+  opacity: 0.3;
+}
+
+.edit .event.item:hover .setting {
   opacity: 0.7;
 }
 
-.event.item .setting:hover {
+.edit .event.item .setting:hover {
   opacity: 1;
 }

@@ -9,8 +9,10 @@ var Event = React.createClass({
   },
 
   editEvent: function (e) {
-    e.stopPropagation();
-    React.render(<AddEventModal event={this.props.data} />, document.getElementById('eventModal'));
+    if (this.props.editEnabled) {
+      e.stopPropagation();
+      React.render(<AddEventModal event={this.props.data}/>, document.getElementById('eventModal'));
+    }
   },
 
   render: function () {

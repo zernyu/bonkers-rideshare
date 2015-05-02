@@ -1,13 +1,25 @@
 var React = require('react/addons');
 var AddEventModal = require('./AddEventModal');
 var EventList = require('./EventList');
+var classNames = require('classnames');
 
 var Events = React.createClass({
   addEvent: function () {
-    React.render(<AddEventModal event={{}} />, document.getElementById('eventModal'));
+    React.render(<AddEventModal event={{}}/>, document.getElementById('eventModal'));
+  },
+
+  toggleEditMode: function () {
+    this.setState({editEnabled: !this.state.editEnabled});
+  },
+
+  getInitialState: function () {
+    return {
+      editEnabled: false
+    };
   },
 
   render: function () {
+    var editButtonClasses = classNames('ui right floated icon button', {blue: this.state.editEnabled});
     return (
         <div>
           <div className="ui page grid">
@@ -20,20 +32,21 @@ var Events = React.createClass({
               </div>
             </div>
 
-            <div className="row">
+            <div className="fixed nav row">
               <div className="column">
-                <h2 className="ui left floated header">
-                  <i className="checkered flag icon"></i>
-
-                  <div className="content">Events</div>
-                </h2>
+                <button className={editButtonClasses} onClick={this.toggleEditMode}>
+                  <i className="setting icon"></i>
+                </button>
                 <button className="ui right floated positive labeled icon button" onClick={this.addEvent}>
                   Add Event
                   <i className="plus icon"></i>
                 </button>
-                <div className="ui hidden clearing divider"></div>
+              </div>
+            </div>
 
-                <EventList className="ui basic segment"/>
+            <div className="row">
+              <div className="column">
+                <EventList editEnabled={this.state.editEnabled}/>
               </div>
             </div>
           </div>

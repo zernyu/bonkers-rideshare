@@ -1,6 +1,10 @@
-/*
-  TODO: use modernizr for mobile styling detection?
-*/
 .scrollable {
   overflow-y: auto;
+}
+
+.ui.page > .fixed.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100% !important;
 }
