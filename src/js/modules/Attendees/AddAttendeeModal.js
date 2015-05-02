@@ -4,7 +4,7 @@ var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 var classNames = require('classnames');
 var validateField = require('../../utils/validateField');
-var If = require('../If');
+var If = require('../../utils/If');
 var DriverSelect = require('./DriverSelect');
 var HostSelect = require('./HostSelect');
 
