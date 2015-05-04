@@ -9,5 +9,5 @@ Parse.initialize(
 var fastclick = require('fastclick');
 fastclick(document.body);
 
-var Events = require('./modules/Events/Events');
+var Events = require('./components/Events/Events');
 React.render(<Events />, document.getElementById('app'));
