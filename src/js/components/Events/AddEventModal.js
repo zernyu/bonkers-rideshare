@@ -21,6 +21,7 @@ var AddEventModal = React.createClass({
 
     var event = {
       name: this.state.name,
+      series: this.state.series,
       date: this.state.date,
       endDate: this.state.endDate,
       registrationUrl: this.state.registrationUrl,
@@ -42,7 +43,7 @@ var AddEventModal = React.createClass({
 
     if (this.state.housingNeeded && this.state.endDate) {
       this.setState({
-        endDate: null,
+        endDate: undefined,
         selectingEndDate: false
       });
     }
@@ -60,7 +61,7 @@ var AddEventModal = React.createClass({
   getInitialState: function () {
     return {
       date: new Date(),
-      endDate: null,
+      endDate: undefined,
       validation: {}
     };
   },
@@ -87,6 +88,12 @@ var AddEventModal = React.createClass({
                          valueLink={this.linkState('name')}/>
 
                   <div className={nameValidation}>{this.state.validation.name}</div>
+                </div>
+                <div className="field">
+                  <label>Series <span className="optional">Optional</span></label>
+                  <input type="text"
+                         placeholder="Fox River Omnium"
+                         valueLink={this.linkState('series')}/>
                 </div>
                 <div className="field">
                   <label>Website <span className="optional">Optional</span></label>

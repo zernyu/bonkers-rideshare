@@ -64,3 +64,8 @@
 .edit .event.item .setting:hover {
   opacity: 1;
 }
+
+.event.item .event.series {
+  font-style: italic;
+  padding-right: 0.5em;
+}

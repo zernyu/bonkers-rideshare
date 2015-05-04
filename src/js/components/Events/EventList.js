@@ -19,7 +19,7 @@ var EventList = React.createClass({
     return (
         <div className={classNames('ui large event selection list', {edit: editEnabled})}>
           {this.data.events.map(function (event) {
-            return <EventListItem key={event.objectId} data={event} editEnabled={editEnabled}/>;
+            return <EventListItem key={event.objectId} event={event} editEnabled={editEnabled}/>;
           })}
         </div>
     );

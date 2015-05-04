@@ -36,7 +36,7 @@ var DatePicker = React.createClass({
         // If the user chooses the same end date, just remove the end date
         newState = {
           date: day.toDate(),
-          endDate: null,
+          endDate: undefined,
           selectingEndDate: true
         };
       }
