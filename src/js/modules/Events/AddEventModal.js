@@ -66,6 +66,10 @@ var AddEventModal = React.createClass({
           date: day.toDate()
         });
       }
+
+      if (!day.isSame(this.refs.daypicker.state.month, 'month')) {
+        this.refs.daypicker.showMonth(day);
+      }
     }
   },
 
