@@ -6,6 +6,8 @@ var If = require('../common/If');
 var AttendeeList = require('../Attendees/AttendeeList');
 var AddAttendeeModal = require('../Attendees/AddAttendeeModal');
 
+var dateFormat = 'dddd, MMMM Do YYYY';
+
 var EventModal = React.createClass({
   closeModal: function () {
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
@@ -45,13 +47,21 @@ var EventModal = React.createClass({
                         target="_blank">Event website <i className="small external icon"></i></a>;
     }
 
+    var eventDate = moment(this.props.event.date);
+    var eventDateString;
+    if (!this.props.event.endDate) {
+      eventDateString = eventDate.format(dateFormat);
+    } else {
+      eventDateString = eventDate.format(dateFormat) + ' - ' + moment(this.props.event.endDate).format(dateFormat);
+    }
+
     return (
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="event content">
             <div className="ui basic segment">
               <div className="ui top attached segment">
                 <h2 className="ui header">{this.props.event.name}
-                  <div className="sub header">{moment(this.props.event.date).format('dddd, MMMM Do YYYY')}</div>
+                  <div className="sub header">{eventDateString}</div>
                 </h2>
                 {registerLink}
                 <i className="remove circle icon" onClick={this.closeModal}></i>
