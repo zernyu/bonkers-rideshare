@@ -6,7 +6,7 @@
   font-style: italic;
 }
 
-.event.content tr:hover {
+body:not(.has-touch) .event.content tr:hover {
   cursor: pointer;
   color: rgb(102, 193, 123);
 }
@@ -41,6 +41,14 @@
   opacity: 1;
 }
 
+.has-touch .event.item:hover {
+  background: transparent !important;
+}
+
+.has-touch .event.item:hover .subtitle {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
 .past.event.item {
   opacity: 0.5;
 }
@@ -57,11 +65,11 @@
   opacity: 0.3;
 }
 
-.edit .event.item:hover .setting {
+body:not(.has-touch) .edit .event.item:hover .setting {
   opacity: 0.7;
 }
 
-.edit .event.item .setting:hover {
+body:not(.has-touch) .edit .event.item .setting:hover {
   opacity: 1;
 }
 
