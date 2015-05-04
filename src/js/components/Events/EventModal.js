@@ -15,7 +15,7 @@ var EventModal = React.createClass({
 
   toggleView: function (switchTo) {
     this.setState({
-      transportationView: switchTo === 'transportation'
+      currentView: switchTo
     });
   },
 
@@ -30,15 +30,18 @@ var EventModal = React.createClass({
 
   getInitialState: function () {
     return {
-      transportationView: true
+      currentView: 'racing'
     };
   },
 
   render: function () {
-    var transportationView = this.state.transportationView;
+    var currentView = this.state.currentView;
+    var housingNeeded = this.props.event.housingNeeded;
 
-    var transportationToggleClasses = classNames('ui button', {'positive active': transportationView});
-    var housingToggleClasses = classNames('ui button', {'positive active': !transportationView});
+    var toggleButtonClasses = classNames('ui fluid attached full width buttons', {two: !housingNeeded, three: housingNeeded});
+    var racingToggleClasses = classNames('ui button', {'positive active': currentView === 'racing'});
+    var transportationToggleClasses = classNames('ui button', {'positive active': currentView === 'transportation'});
+    var housingToggleClasses = classNames('ui button', {'positive active': currentView === 'housing', hidden: !housingNeeded});
 
     var registerLink = '';
     if (this.props.event.registrationUrl) {
@@ -66,19 +69,19 @@ var EventModal = React.createClass({
                 {registerLink}
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
-              <If test={this.props.event.housingNeeded}>
-                <div className="ui two fluid attached full width buttons">
-                  <div className={transportationToggleClasses}
-                       onClick={this.toggleView.bind(this, 'transportation')}>Transportation
-                  </div>
-                  <div className={housingToggleClasses}
-                       onClick={this.toggleView.bind(this, 'housing')}>Housing</div>
+              <div className={toggleButtonClasses}>
+                <div className={racingToggleClasses}
+                     onClick={this.toggleView.bind(this, 'racing')}>Racing
                 </div>
-              </If>
-              <AttendeeList editAttendee={this.editAttendee}
-                            eventId={this.props.event.objectId}
+                <div className={transportationToggleClasses}
+                     onClick={this.toggleView.bind(this, 'transportation')}>Transportation
+                </div>
+                <div className={housingToggleClasses}
+                     onClick={this.toggleView.bind(this, 'housing')}>Housing</div>
+              </div>
+              <AttendeeList eventId={this.props.event.objectId}
                             housingNeeded={this.props.event.housingNeeded}
-                            transportationView={transportationView}/>
+                            currentView={currentView}/>
               <button className="ui fluid bottom attached positive full width button"
                       onClick={this.editAttendee}>Join this event</button>
             </div>

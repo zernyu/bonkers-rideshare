@@ -59,6 +59,7 @@ var AddAttendeeModal = React.createClass({
       eventId: this.props.eventId,
       name: this.state.name,
       notes: this.state.notes,
+      races: this.state.races,
 
       driving: this.state.driving,
       carCapacity: this.state.driving ? parseInt(this.state.carCapacity) : undefined,
@@ -134,6 +135,10 @@ var AddAttendeeModal = React.createClass({
                   <div className={nameValidation}>{this.state.validation.name}</div>
                 </div>
                 <div className="field">
+                  <label>Races</label>
+                  <input placeholder="P123, 3/4, TT, RR" valueLink={this.linkState('races')}/>
+                </div>
+                <div className="field">
                   <div className="ui two fluid buttons">
                     <div className={drivingToggle} onClick={this.driving.bind(this, true)}>
                       <i className="car icon"></i> Driving</div>
@@ -142,51 +147,45 @@ var AddAttendeeModal = React.createClass({
                   </div>
                 </div>
                 <div className={drivingForm}>
-                  <div className="field">
-                    <label>Car capacity</label>
-                    <input type="tel"
-                           placeholder="Number of riders (including yourself)"
-                           ref="carCapacity"
-                           validate={this.state.driving}
-                           validationType="integer"
-                           valueLink={this.linkState('carCapacity')} />
-                    <div className={carCapacityValidation}>{this.state.validation.carCapacity}</div>
-                  </div>
+                  <label>Car capacity</label>
+                  <input type="tel"
+                         placeholder="Number of riders (including yourself)"
+                         ref="carCapacity"
+                         validate={this.state.driving}
+                         validationType="integer"
+                         valueLink={this.linkState('carCapacity')} />
+                  <div className={carCapacityValidation}>{this.state.validation.carCapacity}</div>
                 </div>
                 <div className={ridingForm}>
-                  <div className="field">
-                    <label>Riding with</label>
-                    <DriverSelect options={this.data.drivers} valueLink={this.linkState('ridingWith')} />
-                  </div>
+                  <label>Riding with</label>
+                  <DriverSelect options={this.data.drivers} valueLink={this.linkState('ridingWith')} />
                 </div>
-                <If test={this.props.housingNeeded}><wrapper>
-                  <div className="field">
-                    <div className="ui two fluid buttons">
-                      <div className={hostingToggle} onClick={this.hosting.bind(this, true)}>
-                        <i className="home icon"></i> Hosting</div>
-                      <div className={roomingToggle} onClick={this.hosting.bind(this, false)}>
-                        <i className="trash icon"></i> Bumming</div>
-                    </div>
-                  </div>
-                  <div className={hostingForm}>
+                <If test={this.props.housingNeeded}>
+                  <div className="field group">
                     <div className="field">
+                      <div className="ui two fluid buttons">
+                        <div className={hostingToggle} onClick={this.hosting.bind(this, true)}>
+                          <i className="home icon"></i> Hosting</div>
+                        <div className={roomingToggle} onClick={this.hosting.bind(this, false)}>
+                          <i className="trash icon"></i> Bumming</div>
+                      </div>
+                    </div>
+                    <div className={hostingForm}>
                       <label>Housing capacity</label>
                       <input type="tel"
                              placeholder="Number of people (including yourself) who can stay with you"
                              ref="hostingCapacity"
                              validate={this.state.hosting}
                              validationType="integer"
-                             valueLink={this.linkState('hostingCapacity')} />
+                             valueLink={this.linkState('hostingCapacity')}/>
                       <div className={hostingCapacityValidation}>{this.state.validation.hostingCapacity}</div>
                     </div>
-                  </div>
-                  <div className={roomingForm}>
-                    <div className="field">
+                    <div className={roomingForm}>
                       <label>Rooming with</label>
-                      <HostSelect options={this.data.hosts} valueLink={this.linkState('roomingWith')} />
+                      <HostSelect options={this.data.hosts} valueLink={this.linkState('roomingWith')}/>
                     </div>
                   </div>
-                </wrapper></If>
+                </If>
                 <div className="field">
                   <label>Notes</label>
                   <textarea placeholder="Leaving from Star Lounge at 8am, bringing a teddy bear" valueLink={this.linkState('notes')}></textarea>
