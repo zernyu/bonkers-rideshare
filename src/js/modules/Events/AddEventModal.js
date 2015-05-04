@@ -13,17 +13,10 @@ function isSameDay(a, b) {
 var AddEventModal = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
 
+  /***** MODAL FUNCTIONS *****/
+
   closeModal: function () {
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
-  },
-
-  handleCheckbox: function (checkbox) {
-    var checkboxNode = this.refs[checkbox].getDOMNode();
-    checkboxNode.checked = !checkboxNode.checked;
-
-    var checkState = {};
-    checkState[checkbox] = checkboxNode.checked;
-    this.setState(checkState);
   },
 
   saveEvent: function () {
@@ -45,16 +38,31 @@ var AddEventModal = React.createClass({
     this.closeModal();
   },
 
-  selectDay: function (day, modifiers) {
-    if (modifiers.indexOf('disabled') === -1) {
+  /***** FORM INTERACTION *****/
+
+  driving: function (driving) {
+    this.setState({ driving: driving });
+  },
+
+  handleCheckbox: function (checkbox) {
+    var checkboxNode = this.refs[checkbox].getDOMNode();
+    checkboxNode.checked = !checkboxNode.checked;
+
+    var checkState = {};
+    checkState[checkbox] = checkboxNode.checked;
+    this.setState(checkState);
+  },
+
+  selectDay: function (day, options) {
+    if (options.indexOf('disabled') === -1) {
       this.setState({
         date: day.toDate()
       });
     }
   },
 
-  getModifiers: function () {
-    var modifiers = {
+  calendarOptions: function () {
+    var options = {
       today: function (day) {
         return isSameDay(moment(), day);
       },
@@ -67,7 +75,7 @@ var AddEventModal = React.createClass({
       selected: function (day) {
         var currentDate = moment(this.state.date);
 
-        if (modifiers.disabled(day) || !currentDate) {
+        if (options.disabled(day) || !currentDate) {
           // date may be null if not a valid date
           return false;
         }
@@ -76,12 +84,15 @@ var AddEventModal = React.createClass({
         }
       }.bind(this)
     };
-    return modifiers;
+    return options;
   },
+
+  /***** LIFECYCLE FUNCTIONS *****/
 
   getInitialState: function () {
     return {
       date: new Date(),
+      omnium: false,
       validation: {}
     };
   },
@@ -92,6 +103,9 @@ var AddEventModal = React.createClass({
   },
 
   render: function () {
+    var singleToggle = classNames('ui button', { 'positive active': !this.state.omnium });
+    var omniumToggle = classNames('ui button', { 'positive active': this.state.omnium });
+
     var nameValidation = classNames('ui pointing red label', {'hidden': !this.state.validation.name});
 
     return (
@@ -103,6 +117,14 @@ var AddEventModal = React.createClass({
               </div>
               <div className="ui attached form segment">
                 <div className="field">
+                  <div className="ui two fluid buttons">
+                    <div className={singleToggle} onClick={this.omnium.bind(this, false)}>
+                      <i className="flag icon"></i> Single Day Event</div>
+                    <div className={omniumToggle} onClick={this.omnium.bind(this, true)}>
+                      <i className="checkered flag icon"></i> Omnium</div>
+                  </div>
+                </div>
+                <div className="field">
                   <label>Name</label>
                   <input type="text"
                          placeholder="Getz Farm Classic"
@@ -113,7 +135,7 @@ var AddEventModal = React.createClass({
                   <div className={nameValidation}>{this.state.validation.name}</div>
                 </div>
                 <div className="field">
-                  <label>Registration URL <span className="optional">Optional</span></label>
+                  <label>Website <span className="optional">Optional</span></label>
                   <input type="text"
                          placeholder="https://www.bikereg.com/123456"
                          valueLink={this.linkState('registrationUrl')}/>
@@ -134,7 +156,7 @@ var AddEventModal = React.createClass({
                              enableOutsideDays={true}
                              initialMonth={moment(this.state.date)}
                              numberOfMonths={1}
-                             modifiers={this.getModifiers()}
+                             modifiers={this.calendarOptions()}
                              onDayClick={this.selectDay}
                              onDayTouchTap={this.selectDay}/>
                 </div>

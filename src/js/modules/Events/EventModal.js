@@ -42,7 +42,7 @@ var EventModal = React.createClass({
     if (this.props.event.registrationUrl) {
       registerLink = <a className="registration"
                         href={this.props.event.registrationUrl}
-                        target="_blank">Event registration <i className="small external icon"></i></a>;
+                        target="_blank">Event website <i className="small external icon"></i></a>;
     }
 
     return (
