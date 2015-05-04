@@ -1,9 +1,8 @@
 var _ = require('underscore');
 var React = require('react/addons');
 var ParseReact = require('parse-react');
-var moment = require('moment');
 var classNames = require('classnames');
-var DayPicker = require('react-day-picker');
+var DatePicker = require('../common/DatePicker');
 var handleCheckbox = require('../../utils/handleCheckbox');
 var validateField = require('../../utils/validateField');
 
@@ -37,42 +36,6 @@ var AddEventModal = React.createClass({
 
   /***** FORM INTERACTION *****/
 
-  selectDay: function (day, options) {
-    if (options.indexOf('disabled') === -1) {
-      if (this.state.housingNeeded) {
-        if (this.state.selectingEndDate) {
-          if (day.isBefore(moment(this.state.date), 'day')) {
-            // If the user chose an end date before the start date, just reverse the dates
-            this.setState({
-              date: day.toDate(),
-              endDate: this.state.date,
-              selectingEndDate: false
-            })
-          } else {
-            this.setState({
-              endDate: day.toDate(),
-              selectingEndDate: false
-            });
-          }
-        } else {
-          this.setState({
-            date: day.toDate(),
-            endDate: null,
-            selectingEndDate: true
-          })
-        }
-      } else {
-        this.setState({
-          date: day.toDate()
-        });
-      }
-
-      if (!day.isSame(this.refs.daypicker.state.month, 'month')) {
-        this.refs.daypicker.showMonth(day);
-      }
-    }
-  },
-
   toggleHousing: function () {
     handleCheckbox.call(this, 'housingNeeded');
 
@@ -84,32 +47,11 @@ var AddEventModal = React.createClass({
     }
   },
 
-  calendarOptions: function () {
-    var options = {
-      today: function (day) {
-        return day.isSame(moment(), 'day');
-      },
-
-      // disable past days
-      disabled: function (day) {
-        return day.isBefore(moment(), 'day');
-      },
-
-      selected: function (day) {
-        var currentDate = moment(this.state.date);
-
-        if (options.disabled(day) || !currentDate) {
-          // date may be null if not a valid date
-          return false;
-        }
-        else if (!this.state.endDate) {
-          return day.isSame(currentDate, 'day');
-        } else {
-          return day.isBetween(currentDate.subtract(1, 'day'), moment(this.state.endDate).add(1, 'day'), 'day');
-        }
-      }.bind(this)
-    };
-    return options;
+  updateDate: function (date, endDate) {
+    this.setState({
+      date: date,
+      endDate: endDate
+    });
   },
 
   /***** LIFECYCLE FUNCTIONS *****/
@@ -118,7 +60,6 @@ var AddEventModal = React.createClass({
     return {
       date: new Date(),
       endDate: null,
-      selectingEndDate: false,
       validation: {}
     };
   },
@@ -164,13 +105,7 @@ var AddEventModal = React.createClass({
                 </div>
                 <div className="field">
                   <label>Date <span className="optional">{this.state.housingNeeded ? 'Choose a start and end day in the calendar.' : ''}</span></label>
-                  <DayPicker ref="daypicker"
-                             enableOutsideDays={true}
-                             initialMonth={moment(this.state.date)}
-                             numberOfMonths={1}
-                             modifiers={this.calendarOptions()}
-                             onDayClick={this.selectDay}
-                             onDayTouchTap={this.selectDay}/>
+                  <DatePicker onDatePicked={this.updateDate} date={this.state.date} endDate={this.state.endDate} />
                 </div>
               </div>
               <div className="ui bottom attached segment">

@@ -2,7 +2,7 @@ var _ = require('underscore');
 var moment = require('moment');
 var React = require('react/addons');
 var classNames = require('classnames');
-var If = require('../../utils/If');
+var If = require('../common/If');
 var AttendeeList = require('../Attendees/AttendeeList');
 var AddAttendeeModal = require('../Attendees/AddAttendeeModal');
 
