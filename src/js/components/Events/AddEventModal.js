@@ -22,6 +22,7 @@ var AddEventModal = React.createClass({
     var event = {
       name: this.state.name,
       date: this.state.date,
+      endDate: this.state.endDate,
       registrationUrl: this.state.registrationUrl,
       housingNeeded: this.state.housingNeeded
     };
@@ -104,8 +105,11 @@ var AddEventModal = React.createClass({
                   </div>
                 </div>
                 <div className="field">
-                  <label>Date <span className="optional">{this.state.housingNeeded ? 'Choose a start and end day in the calendar.' : ''}</span></label>
-                  <DatePicker onDatePicked={this.updateDate} date={this.state.date} endDate={this.state.endDate} />
+                  <label>Date <span className="optional">{this.state.housingNeeded ? 'Choose a start and (optional) end day in the calendar.' : ''}</span></label>
+                  <DatePicker onDatePicked={this.updateDate}
+                              date={this.state.date}
+                              endDate={this.state.endDate}
+                              selectRange={this.state.housingNeeded}/>
                 </div>
               </div>
               <div className="ui bottom attached segment">

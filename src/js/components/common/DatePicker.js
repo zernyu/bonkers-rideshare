@@ -11,24 +11,29 @@ var DatePicker = React.createClass({
       return;
     }
 
+    // If the user clicks on a day from another month, switch the calendar to that month
+    if (!day.isSame(this.refs.daypicker.state.month, 'month')) {
+      this.refs.daypicker.showMonth(day);
+    }
+
     var newState;
 
-    if (this.state.housingNeeded) {
-      if (this.state.selectingEndDate) {
-        if (day.isBefore(moment(this.state.date), 'day')) {
-          // If the user chose an end date before the start date, just reverse the dates
-          newState = {
-            date: day.toDate(),
-            endDate: this.state.date,
-            selectingEndDate: false
-          };
-        } else {
-          newState = {
-            endDate: day.toDate(),
-            selectingEndDate: false
-          };
-        }
+    if (this.props.selectRange) {
+      if (this.state.selectingEndDate && day.isBefore(moment(this.state.date), 'day')) {
+        // If the user chose an end date before the start date, just reverse the dates
+        newState = {
+          date: day.toDate(),
+          endDate: this.state.date,
+          selectingEndDate: false
+        };
+      } else if (this.state.selectingEndDate && day.isAfter(moment(this.state.date), 'day')) {
+        newState = {
+          date: this.state.date,
+          endDate: day.toDate(),
+          selectingEndDate: false
+        };
       } else {
+        // If the user chooses the same end date, just remove the end date
         newState = {
           date: day.toDate(),
           endDate: null,
@@ -39,11 +44,6 @@ var DatePicker = React.createClass({
       newState = {
         date: day.toDate()
       };
-    }
-
-    // If the user clicks on a day from another month, switch the calendar to that month
-    if (!day.isSame(this.refs.daypicker.state.month, 'month')) {
-      this.refs.daypicker.showMonth(day);
     }
 
     this.props.onDatePicked(newState.date, newState.endDate);

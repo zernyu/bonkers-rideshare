@@ -1,3 +1,7 @@
 .scrollable {
   overflow-y: auto;
 }
+
+.centered.text {
+  text-align: center;
+}
