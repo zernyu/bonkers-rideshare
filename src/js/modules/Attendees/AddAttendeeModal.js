@@ -123,12 +123,7 @@ var AddAttendeeModal = React.createClass({
         <div className="ui scrollable page dimmer transition visible animating fade in">
           <div className="ui small basic modal attendee content">
             <div className="ui basic segment">
-              <div className="ui top attached segment">
-                <h2 className="ui header">{this.state.name || 'I wanna race!'}
-                  <div className="sub header">{this.state.name ? 'wants to race!' : ''}</div>
-                </h2>
-              </div>
-              <div className="ui attached form segment">
+              <div className="ui top attached form segment">
                 <div className="field">
                   <label>Name</label>
                   <input type="text"

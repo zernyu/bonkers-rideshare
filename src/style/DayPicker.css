@@ -52,7 +52,7 @@
   cursor: pointer;
 }
 
-.DayPicker-day:hover:not(.DayPicker-day--outside):not(.DayPicker-day--disabled) {
+.DayPicker-day:hover:not(.DayPicker-day--disabled) {
    background-color: #66c17b;
    color: white;
  }
@@ -73,7 +73,7 @@
   color: #5bbd72;
 }
 
-.DayPicker-day--selected:not(.DayPicker-day--outside) {
+.DayPicker-day--selected {
   color: white;
   background-color: #5bbd72;
 }
