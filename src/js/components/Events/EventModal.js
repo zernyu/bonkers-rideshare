@@ -71,11 +71,9 @@ var EventModal = React.createClass({
               </div>
               <div className={toggleButtonClasses}>
                 <div className={racingToggleClasses}
-                     onClick={this.toggleView.bind(this, 'racing')}>Racing
-                </div>
+                     onClick={this.toggleView.bind(this, 'racing')}>Racing</div>
                 <div className={transportationToggleClasses}
-                     onClick={this.toggleView.bind(this, 'transportation')}>Transport
-                </div>
+                     onClick={this.toggleView.bind(this, 'transportation')}>Transport</div>
                 <div className={housingToggleClasses}
                      onClick={this.toggleView.bind(this, 'housing')}>Housing</div>
               </div>
