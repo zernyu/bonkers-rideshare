@@ -29,7 +29,7 @@ var EventListItem = React.createClass({
     }
 
     return (
-        <a className={classNames('event item', {past: eventDate.isBefore()})} onClick={this.openEvent}>
+        <a className={classNames('event item', {past: eventDate.isBefore(moment().add(1, 'day'))})} onClick={this.openEvent}>
           <i className="right floated large setting icon" onClick={this.editEvent}></i>
           <div className="header">
             <If test={this.props.event.series}>
