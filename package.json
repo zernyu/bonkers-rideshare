@@ -17,7 +17,8 @@
     "parse-react": "^0.1.4",
     "react": "^0.13.1",
     "react-day-picker": "^0.8.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "yarr": "^1.0.2"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
