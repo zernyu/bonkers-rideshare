@@ -6,10 +6,10 @@ Parse.initialize(
     "<!-- substitute:javascriptId -->"
 );
 
-var fastclick = require('fastclick');
-fastclick(document.body);
-
 if ('ontouchstart' in document) {
+  var fastclick = require('fastclick');
+  fastclick(document.body);
+
   document.body.className += ' has-touch';
 }
 

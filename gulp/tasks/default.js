@@ -27,10 +27,10 @@ var config = require('../config');
 var paths = {
   html: 'src/html/index.html',
   scripts: {
-    entry: './src/js/app.js'
+    entry: flags.mobile ? './src/js/app-mobile.js' : './src/js/app.js'
   },
   style: {
-    app: 'src/style/**/*.css',
+    app: flags.mobile ? 'src/style/**/*.css' : 'src/style/*.css',
     lib: [
       'bower_components/semantic-ui/dist/semantic.css',
       'bower_components/semantic-ui/dist/themes/default/assets/fonts/*'
@@ -58,20 +58,24 @@ gulp.task('connect', function () {
 });
 
 gulp.task('html', function () {
+  var modes = [flags.mobile ? 'mobile' : 'web'];
+
   var appPaths;
   if (process.env.environment === 'production') {
-    gutil.log(gutil.colors.yellow('Building in Production mode'));
+    modes.push('production');
     appPaths = [
       paths.build.production + '/' + paths.build.script.production,
       paths.build.production + '/**/*.css'
     ]
   } else {
-    gutil.log(gutil.colors.yellow('Building in Development mode'));
+    modes.push('development');
     appPaths = [
       paths.build.development + '/' + paths.build.script.development,
       paths.build.development + '/style/**/*.css'
     ]
   }
+
+  gutil.log('Building in', gutil.colors.magenta(modes), 'mode.');
 
   return gulp.src(paths.html)
       .pipe(handleErrors(errorHandler))
