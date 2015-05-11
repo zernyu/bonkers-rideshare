@@ -5,6 +5,7 @@ var inject = require('gulp-inject');
 var sequence = require('run-sequence');
 var concat = require('gulp-concat');
 var connect = require('gulp-connect');
+var lrload = require('livereactload');
 var del = require('del');
 var handleErrors = require('gulp-plumber');
 var errorHandler = require('../util/handleErrors');
@@ -117,34 +118,38 @@ gulp.task('style', function () {
   }
 });
 
+var bundler = browserify({
+  entries: [paths.scripts.entry],
+  transform: flags.production ? [reactify, uglifyify] : [reactify, lrload],
+  debug: !flags.production,
+  cache: {},
+  packageCache: {},
+  fullPaths: true // for watchify
+});
+
 gulp.task('watch', ['style'], function () {
+  lrload.monitor(paths.build.development + '/' + paths.build.script.development, {displayNotification: true});
   gulp.watch(paths.html, ['html']);
   gulp.watch(paths.style.app, ['style']);
 
-  var watcher = watchify(browserify({
-    entries: [paths.scripts.entry],
-    transform: [reactify],
-    debug: true,
-    cache: {}, packageCache: {}, fullPaths: true
-  }));
-
+  var watcher = watchify(bundler);
+  bundle();
   return watcher
-      .on('update', function () {
-        var updateStart = Date.now();
-        gutil.log(gutil.colors.green('Sources updated. Rebundling javascript') + '...');
-        watcher.bundle()
-            .on('error', errorHandler)
-            .pipe(source(paths.build.script.development))
-            .pipe(streamify(substituter(config.parse)))
-            .pipe(gulp.dest(paths.build.development))
-            .pipe(connect.reload());
-        gutil.log(gutil.colors.green('Complete!'), 'after', gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
-      })
-      .bundle()
       .on('error', errorHandler)
-      .pipe(source(paths.build.script.development))
-      .pipe(streamify(substituter(config.parse)))
-      .pipe(gulp.dest(paths.build.development));
+      .on('update', bundle);
+
+  function bundle() {
+    var updateStart = Date.now();
+    gutil.log(gutil.colors.green('Updating JavaScript bundle') + '...');
+    watcher
+        .bundle()
+        .on('error', errorHandler)
+        .pipe(source(paths.build.script.development))
+        .pipe(streamify(substituter(config.parse)))
+        .pipe(gulp.dest(paths.build.development));
+    gutil.log(gutil.colors.green('Complete!'), 'after', gutil.colors.magenta((Date.now() - updateStart) + 'ms'));
+  }
+
 });
 
 gulp.task('clean', function (cb) {
@@ -154,10 +159,7 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('compileScripts', function () {
-  return browserify({
-    entries: [paths.scripts.entry],
-    transform: [reactify, uglifyify]
-  })
+  return bundler
       .bundle()
       .on('error', errorHandler)
       .pipe(source(paths.build.script.production))
