@@ -127,7 +127,7 @@ var AddEventModal = React.createClass({
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
                   <button className="ui button" onClick={this.closeModal}>Cancel</button>
-                  <button className="ui right labeled blue icon button" onClick={this.saveEvent}>
+                  <button className="ui right labeled bonkers blue icon button" onClick={this.saveEvent}>
                     Save event
                     <i className="right chevron icon"></i>
                   </button>

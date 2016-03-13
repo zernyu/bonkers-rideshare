@@ -46,9 +46,9 @@ var EventModal = React.createClass({
     var housingNeeded = this.props.event.housingNeeded;
 
     var toggleButtonClasses = classNames('ui fluid attached full width buttons', {one: !housingNeeded, two: housingNeeded});
-    var racingToggleClasses = classNames('ui button', {'blue active': currentView === 'racing'});
-    var transportationToggleClasses = classNames('ui button', {'blue active': currentView === 'transportation'});
-    var housingToggleClasses = classNames('ui button', {'blue active': currentView === 'housing', hidden: !housingNeeded});
+    var racingToggleClasses = classNames('ui bonkers button', {'blue active': currentView === 'racing'});
+    var transportationToggleClasses = classNames('ui bonkers button', {'blue active': currentView === 'transportation'});
+    var housingToggleClasses = classNames('ui bonkers button', {'blue active': currentView === 'housing', hidden: !housingNeeded});
 
     var registerLink = '';
     if (this.props.event.registrationUrl) {
@@ -85,7 +85,7 @@ var EventModal = React.createClass({
               <AttendeeList eventId={this.props.event.objectId}
                             housingNeeded={this.props.event.housingNeeded}
                             currentView={currentView}/>
-              <button className="ui fluid bottom attached blue huge full width button"
+              <button className="ui fluid bottom attached bonkers blue huge full width button"
                       onClick={this.editAttendee}>Join this event</button>
             </div>
           </div>

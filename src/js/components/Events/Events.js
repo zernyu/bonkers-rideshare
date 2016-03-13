@@ -19,7 +19,7 @@ var Events = React.createClass({
   },
 
   render: function () {
-    var editButtonClasses = classNames('ui right floated icon button', {blue: this.state.editEnabled});
+    var editButtonClasses = classNames('ui right floated icon bonkers button', {blue: this.state.editEnabled});
 
     return (
         <div>
@@ -38,7 +38,7 @@ var Events = React.createClass({
                 <button className={editButtonClasses} onClick={this.toggleEditMode}>
                   <i className="setting icon"></i>
                 </button>
-                <button className="ui right floated blue labeled icon button" onClick={this.addEvent}>
+                <button className="ui right floated bonkers blue labeled icon button" onClick={this.addEvent}>
                   Add Event
                   <i className="plus icon"></i>
                 </button>

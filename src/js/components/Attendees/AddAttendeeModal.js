@@ -111,13 +111,13 @@ var AddAttendeeModal = React.createClass({
   },
 
   render: function () {
-    var drivingToggle = classNames('ui button', { 'blue active': this.state.driving });
-    var ridingToggle = classNames('ui button', { 'blue active': !this.state.driving });
+    var drivingToggle = classNames('ui bonkers button', { 'blue active': this.state.driving });
+    var ridingToggle = classNames('ui bonkers button', { 'blue active': !this.state.driving });
     var drivingForm = classNames('field group', { 'hidden': !this.state.driving });
     var ridingForm = classNames('field group', { 'hidden': this.state.driving });
 
-    var hostingToggle = classNames('ui button', { 'blue active': this.state.hosting });
-    var roomingToggle = classNames('ui button', { 'blue active': !this.state.hosting });
+    var hostingToggle = classNames('ui bonkers button', { 'blue active': this.state.hosting });
+    var roomingToggle = classNames('ui bonkers button', { 'blue active': !this.state.hosting });
     var hostingForm = classNames('field group', { 'hidden': !this.state.hosting });
     var roomingForm = classNames('field group', { 'hidden': this.state.hosting });
 
@@ -195,7 +195,7 @@ var AddAttendeeModal = React.createClass({
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
                   <button className="ui button" onClick={this.closeModal}>Cancel</button>
-                  <button className="ui right labeled blue icon button" onClick={this.saveAttendee}>
+                  <button className="ui right labeled bonkers blue icon button" onClick={this.saveAttendee}>
                     {this.props.attendee.objectId ? 'Update' : 'Join'}
                     <i className="right chevron icon"></i>
                   </button>

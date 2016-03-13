@@ -10,7 +10,8 @@
   display: none !important;
 }
 
-.ui.blue.labeled.button {
+.ui.bonkers.blue.button,
+.ui.bonkers.blue.button.active {
   background-color: #00adef;
 }
 
