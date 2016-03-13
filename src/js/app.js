@@ -7,10 +7,10 @@ Parse.initialize(
 );
 
 if ('ontouchstart' in document) {
-  var fastclick = require('fastclick');
-  fastclick(document.body);
+  //var fastclick = require('fastclick');
+  //fastclick(document.body);
 
-  document.body.className += ' has-touch';
+  document.body.classList.add('has-touch');
 }
 
 var Events = require('./components/Events/Events');

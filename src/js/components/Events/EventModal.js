@@ -10,6 +10,8 @@ var dateFormat = 'dddd, MMMM Do YYYY';
 
 var EventModal = React.createClass({
   closeModal: function () {
+    document.getElementsByTagName('html')[0].classList.remove('noscroll');
+    document.body.classList.remove('noscroll');
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
@@ -30,18 +32,23 @@ var EventModal = React.createClass({
 
   getInitialState: function () {
     return {
-      currentView: 'racing'
+      currentView: 'transportation'
     };
+  },
+
+  componentWillMount: function () {
+    document.getElementsByTagName('html')[0].classList.add('noscroll');
+    document.body.classList.add('noscroll');
   },
 
   render: function () {
     var currentView = this.state.currentView;
     var housingNeeded = this.props.event.housingNeeded;
 
-    var toggleButtonClasses = classNames('ui fluid attached full width buttons', {two: !housingNeeded, three: housingNeeded});
-    var racingToggleClasses = classNames('ui button', {'positive active': currentView === 'racing'});
-    var transportationToggleClasses = classNames('ui button', {'positive active': currentView === 'transportation'});
-    var housingToggleClasses = classNames('ui button', {'positive active': currentView === 'housing', hidden: !housingNeeded});
+    var toggleButtonClasses = classNames('ui fluid attached full width buttons', {one: !housingNeeded, two: housingNeeded});
+    var racingToggleClasses = classNames('ui button', {'blue active': currentView === 'racing'});
+    var transportationToggleClasses = classNames('ui button', {'blue active': currentView === 'transportation'});
+    var housingToggleClasses = classNames('ui button', {'blue active': currentView === 'housing', hidden: !housingNeeded});
 
     var registerLink = '';
     if (this.props.event.registrationUrl) {
@@ -70,8 +77,6 @@ var EventModal = React.createClass({
                 <i className="remove circle icon" onClick={this.closeModal}></i>
               </div>
               <div className={toggleButtonClasses}>
-                <div className={racingToggleClasses}
-                     onClick={this.toggleView.bind(this, 'racing')}>Racing</div>
                 <div className={transportationToggleClasses}
                      onClick={this.toggleView.bind(this, 'transportation')}>Transport</div>
                 <div className={housingToggleClasses}
@@ -80,7 +85,7 @@ var EventModal = React.createClass({
               <AttendeeList eventId={this.props.event.objectId}
                             housingNeeded={this.props.event.housingNeeded}
                             currentView={currentView}/>
-              <button className="ui fluid bottom attached positive full width button"
+              <button className="ui fluid bottom attached blue huge full width button"
                       onClick={this.editAttendee}>Join this event</button>
             </div>
           </div>

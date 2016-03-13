@@ -31,6 +31,8 @@ var AddAttendeeModal = React.createClass({
 
 
   closeModal: function () {
+    document.getElementsByTagName('html')[0].classList.remove('noscroll');
+    document.body.classList.remove('noscroll');
     React.unmountComponentAtNode(this.getDOMNode().parentNode);
   },
 
@@ -93,6 +95,9 @@ var AddAttendeeModal = React.createClass({
   },
 
   componentWillMount: function () {
+    document.getElementsByTagName('html')[0].classList.add('noscroll');
+    document.body.classList.add('noscroll');
+
     var preloadState = this.props.attendee || {};
 
     if (_.isObject(preloadState.ridingWith)) {
@@ -106,13 +111,13 @@ var AddAttendeeModal = React.createClass({
   },
 
   render: function () {
-    var drivingToggle = classNames('ui button', { 'positive active': this.state.driving });
-    var ridingToggle = classNames('ui button', { 'positive active': !this.state.driving });
+    var drivingToggle = classNames('ui button', { 'blue active': this.state.driving });
+    var ridingToggle = classNames('ui button', { 'blue active': !this.state.driving });
     var drivingForm = classNames('field group', { 'hidden': !this.state.driving });
     var ridingForm = classNames('field group', { 'hidden': this.state.driving });
 
-    var hostingToggle = classNames('ui button', { 'positive active': this.state.hosting });
-    var roomingToggle = classNames('ui button', { 'positive active': !this.state.hosting });
+    var hostingToggle = classNames('ui button', { 'blue active': this.state.hosting });
+    var roomingToggle = classNames('ui button', { 'blue active': !this.state.hosting });
     var hostingForm = classNames('field group', { 'hidden': !this.state.hosting });
     var roomingForm = classNames('field group', { 'hidden': this.state.hosting });
 
@@ -133,10 +138,6 @@ var AddAttendeeModal = React.createClass({
                          validate={true}
                          valueLink={this.linkState('name')} />
                   <div className={nameValidation}>{this.state.validation.name}</div>
-                </div>
-                <div className="field">
-                  <label>Races</label>
-                  <input placeholder="P123, 3/4, TT, RR" valueLink={this.linkState('races')}/>
                 </div>
                 <div className="field">
                   <div className="ui two fluid buttons">
@@ -194,7 +195,7 @@ var AddAttendeeModal = React.createClass({
               <div className="ui bottom attached segment">
                 <div className="ui two fluid buttons">
                   <button className="ui button" onClick={this.closeModal}>Cancel</button>
-                  <button className="ui right labeled positive icon button" onClick={this.saveAttendee}>
+                  <button className="ui right labeled blue icon button" onClick={this.saveAttendee}>
                     {this.props.attendee.objectId ? 'Update' : 'Join'}
                     <i className="right chevron icon"></i>
                   </button>

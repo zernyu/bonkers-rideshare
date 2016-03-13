@@ -27,8 +27,8 @@ var Events = React.createClass({
             <div className="row">
               <div className="center aligned column">
                 <h1 className="ui basic segment centered header">
-                  Catch a ride!
-                  <div className="sub header">with some pretty sweet folks</div>
+                  BONKERS RIDE SHARE
+                  <div className="sub header">Car Pooling for Cool People</div>
                 </h1>
               </div>
             </div>
@@ -38,7 +38,7 @@ var Events = React.createClass({
                 <button className={editButtonClasses} onClick={this.toggleEditMode}>
                   <i className="setting icon"></i>
                 </button>
-                <button className="ui right floated positive labeled icon button" onClick={this.addEvent}>
+                <button className="ui right floated blue labeled icon button" onClick={this.addEvent}>
                   Add Event
                   <i className="plus icon"></i>
                 </button>
@@ -52,8 +52,8 @@ var Events = React.createClass({
             </div>
           </div>
 
-          <div id="eventModal"></div>
-          <div id="attendeeModal"></div>
+          <div id="eventModal" className="modal"></div>
+          <div id="attendeeModal" className="modal"></div>
         </div>
     );
   }

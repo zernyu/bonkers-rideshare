@@ -53,7 +53,7 @@
 }
 
 .DayPicker-day:hover:not(.DayPicker-day--disabled) {
-   background-color: #66c17b;
+   background-color: #458ac6;
    color: white;
  }
 
@@ -70,12 +70,12 @@
 }
 
 .DayPicker-day--today {
-  color: #5bbd72;
+  color: #00adef;
 }
 
 .DayPicker-day--selected {
   color: white;
-  background-color: #5bbd72;
+  background-color: #00adef;
 }
 
 @media only screen and (max-width: 991px) {

@@ -9,3 +9,14 @@
 .hidden.button {
   display: none !important;
 }
+
+.ui.blue.labeled.button {
+  background-color: #00adef;
+}
+
+@media (max-width: 767px) {
+  .modal .content .remove {
+    top: 0.5em;
+    right: 0.35em;
+  }
+}
